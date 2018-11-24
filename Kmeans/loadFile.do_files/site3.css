@@ -1,0 +1,99 @@
+@import "mod_brows.css";
+
+html { min-height:100%; margin-bottom:1px; }/*Force scrollbar to stop jumping*/
+
+body, p, ul, ol, li, table, tr, td, th, a, h1, h2, h3, h4, .head1, .head2, .head3, .head4, .label, form { font-family: Arial, Helvetica, Sans-serif; }
+
+body, p, table, tr, td, th, ul, ol, li, blockquote, a, .menu, .selectedmenu, .tab, .tabbody, .button, .acttab, form  { font-size: 10pt; }
+
+body    { color: #000000; background-color: #ffffff;  }
+
+a:link { color: #000099; text-decoration:underline; }
+a:visited { color: #2A5177;}
+a:hover   { color: #660033; text-decoration: underline; }
+
+/* KLUDGE FOR FE REPORTS */
+font {font-family:Verdana, Arial, Helvetica, sans-serif}
+
+th   {background-color:#2B5680; color:#FFFFFF; font-weight: bold; text-align:left ; padding: 4px 5px 4px 5px; }
+td.rightpad   { padding-right:10px; }
+
+.monospace {font-family: monospace;}
+
+h1 { font-size: 15pt; color:#990000; margin-bottom:0px }
+h2 { font-size: 11pt; color:maroon; margin-bottom:0px }
+h3 { font-size: 10pt; }
+h4 { font-size: 9pt; }
+
+/* specific classes */
+/* Same as H1 except Inline.  These remove the spaces caused by H Elements*/
+
+.head1     { font-weight: bold; font-size: 16pt; display: inline; }
+.head2       { font-weight: bold; font-size: 12pt; display: inline; }
+.head3       { color: black; font-weight: bold; font-size: 11pt; display: inline; }
+.head3 a { font-weight: bold; font-size: 11pt; display: inline; }
+.head4       { color: black; font-weight: bold; font-size: 10pt; display: inline; }
+.head4 a { font-weight: bold; font-size: 10pt; display: inline; }
+
+/*These styles are for cm only*/
+h2.nbmrgn { font-size: 12pt; margin-bottom: -15px; }
+h3.nbmrgn { font-size: 11pt; margin-bottom: -13px; }
+h4.nbmrgn { font-size: 10pt; margin-bottom: -14px; }
+
+/*Bulleted List Styles */
+
+ul li  { list-style-type: disc; }
+div.ulnleftm {margin-left: -23px;}
+div.olnleftm {margin-left: -15px;}
+ul.ntopm, ol.ntopm {margin-top: 2px;}
+/*The new modern browser only ul style*/
+ul.nleftm {margin-left:16px; margin-top:2px; margin-bottom:2px; }
+
+/*legacy ul style*/		
+li.ntopm      { margin-top: -16px; }
+
+em.caption     { font-size: 9pt; }
+
+img.rightmrgn      { margin-right: 10px; margin-bottom: 10px; }
+
+code  { font-family: monospace; display:block;}
+samp  { font-family: monospace; margin-left:25px; display:block;}
+code.fnctn {display:inline;}
+
+sup  { font-size: x-small; }
+a:link.undrln {text-decoration:underline}
+
+
+/*Newsgroup Header Box */
+.tabheader {color: white; font-weight:bold; font-size: 10pt; padding-left:10px; padding-right:10px}
+
+.ornghd {color: #c86a02; font-weight:bold;}
+
+
+
+
+/*Global Internal Navbar*/
+
+.appMenuLayerClass { position: absolute; top: 40px; left: 400px; visibility: hidden }
+#appMenuDiv { position: absolute; top: 40px; left: 400px; visibility: hidden }
+.menuItemClass {cursor: hand; border-bottom: 1px solid gray; background-color: white;  padding-left: 10px; padding-right: 10px }
+
+
+
+#bcrumbs {font-size:9pt;}
+#bcrumbs a {font-size:9pt; font-weight:normal}
+#bcrumbs a:hover {text-decoration:underline}
+.alertbox {border: 1px solid black; background-color:#E6EBF8;  }
+.alertbox td {padding:7px;}
+
+
+body {
+margin: 10px auto;
+width: 779px;
+}
+
+table#header {width:779px!important;}
+table#mainframe {width:779px!important;}
+table#topnav {width:779px!important;}
+
+

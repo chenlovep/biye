@@ -1,0 +1,198 @@
+/* font face attributes */
+body { font-family: Verdana, Arial, Helvetica, sans-serif; }
+
+/* size attributes */
+/* 8pt h4 */
+.cmnty1.head4, .ldrs, .smallbldwht, .smallgrey, .small, .smallwht, .feh4wht, td.small a { font-size: 8pt; }
+/* 9pt h3 */
+.cmnty1.head3, .smplain, .smallerrt { font-size: 9pt;}
+
+/* bold attributes */
+.cmnty1.head3, .cmnty1.head4, .smallbldwht, .feh4wht { font-weight: bold;}
+
+/* FORM ELEMENTS */
+.formelem { font-family:monospace; font-size:9pt; }
+div .type2 .button { font-size:8pt; }
+.textarea { font-family:monospace; font-size:9pt; }
+@media screen{
+	.formelem { border:1px solid black; font-family:Arial; font-size:10pt }
+	.textarea { font-family:Arial; font-size:10pt }
+			 }
+/*TopNav*/
+
+#topnav { border:1px solid #00246F; background-color:whitesmoke; cursor:hand;}
+#topnavitems td { color:#003366; padding-top:1px; padding-bottom:2px; border-bottom:3px solid #FFE47A; }
+#topnav a { text-decoration:none; font-weight:bold; color:#003399; font-size:9pt; }
+#topnav td.activebg { background-color: #102F6D; border-bottom:3px solid #FFCC00}
+#topnav td.activebg a {color: #FFFFFF;}
+#topnav td.hover { background-color:#CAD4F9; border-bottom:3px solid #FFCC00}
+#topnav td.hover a {color: #00246F;}
+#header td {padding:0px 0px 8px 0px;}
+div.mainbody {margin-left:20px}
+
+
+/*Footer*/
+#relatedtopics {margin-left:10px; margin-bottom:10px; } 
+#footer {border-top:1px solid #336699; }
+#topicslinks a {font-size:11px; }
+#topicslinks {border-top:1px solid #336699; padding-top:8px; font-size:11px; }
+#relatedtopics strong {background-color:#003366; color:#FFFFFF; padding:4px}
+/* BREADCRUMBS */
+	/*Here is the Cell*/
+#breadcrmb {margin-bottom:10px; }
+.brdcrmbcell {padding-left:4px; font-weight:bold; font-size:9pt;  }
+
+	/*Here is the text WITHIN the cell*/
+td.brdcrmbcell a:link, .brdcrmbcell a:visited { font-size:9pt; color:#003399; text-decoration:underline; }
+	
+/* HEADERS */
+	/* here is the header cell */
+.headercell { font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; padding-left:4px; color: maroon; font-size:11pt; }
+.lvl2headercell {font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; color:white; font-size:9pt; padding-left:4px}
+.thheadercell {font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; color:white; font-size:9pt; padding-left:4px}
+.cmnty1 .thheadercell a:link, .cmnty1 .thheadercell a:visited {color:white; text-decoration:underline; }
+.cmnty1 .thheadercell a:hover {color:#FFCC00; text-decoration:underline; }
+	
+/* Table Type1
+>> Table Type 1 is the same except it has blue headers #2B5680*/
+	/*div.type1 .headercell { background-color: #2B5680; }*/
+div.type1 .lvl2headercell { background-color: #FFFFFF; color:#C24C29; padding-top:2px; padding-bottom:3px; }
+div.type1 .thheadercell { background-color: #2B5680; }
+div.type1 .lightback, .ltblue a:visited {color: #2E4E89}
+.cmnty1 .ltblue a:visited {color: #2E4E89}
+	
+/* Table Type2 this class is for the right nav in file exchange*/
+.cmnty1 div.type2 .navcell { background-color:#3871A9; color:white; padding-left:10px; padding-top:4px; padding-bottom:5px; }
+.cmnty1 div.type2 .navcell a:hover { color:white; text-decoration: underline; }
+.cmnty1 div.type2 .navcell {color:white; padding-left:10px; padding-top:4px; padding-bottom:5px; Filter: Alpha(Opacity=100, FinishOpacity=80, Style=1 StartY=0, StartX=0, FinishY=250, FinishX=0,); width: 180px; background-color: #356A9F;}
+	             
+.cmnty1 div.type2 a:visited, div.type2 a:link {color: white; text-decoration:none;}
+.navcell td.npad {padding:0 }
+html>body td.npad {padding:0}
+ /* changes the link color to blue, because it the screenshot section is within the type2 which turns it white*/
+#scrnshot a:link, #scrnshot a:visited { color: #003399;}
+
+/* Alphabetical Table */
+table.alpha {background-color:#FFCC00; border: 1px solid black; text-align:center; font-weight:bold;}
+.cmnty1 .alpha a:link, .cmnty1 .alpha a:visited {color:#003399; font-size:9pt; text-decoration:none; }
+.cmnty1 .alpha a:hover {color:white; text-decoration:underline; }
+
+/* link attributes */
+.cmnty1 a:link { color: #003399; text-decoration:underline; }
+.cmnty1 a:hover  { color: #800000; text-decoration:none; }
+.cmnty1 a:visited  { color: #2A5177;text-decoration:underline; }
+.cmnty1 a.head4:link { color: #003399;  text-decoration:none; }
+.cmnty1 a.head4:hover  { color: #800000; text-decoration:none; }
+.cmnty1 a.head4:visited  { color: #003399; text-decoration:none; }
+.cmnty1 a.more:link, .cmnty1 a.more:visited  {color: #003399; text-decoration: none; font-size:11px; text-align: right; }
+.cmnty1 a.more:hover  { color: #800000; text-decoration:none; font-size:11px; }
+.cmnty1 a.small:visited  { color: #003399; text-decoration:underline; }
+.cmnty1 a.small:link  { color: #003399; text-decoration:underline; }
+.cmnty1 a.smallwht:link, .cmnty1 a.feh4nmar:link, .cmnty1 a.feh4nmar:visited  { color: #FFFFFF; text-decoration:none; }
+.cmnty1 a.smallwht:visited  { color: #FFFFFF; text-decoration:none; }
+.cmnty1 a.plain:link { text-decoration:none; }
+.cmnty1 a.smplain:link { text-decoration: none; }
+.cmnty1 a.smplain:visited { text-decoration: underline; }
+.cmnty1 a.recentheader:link { color:#000000; text-decoration:none; }
+.cmnty1 a.feh4blk:visited { color: #00009C; text-decoration:underline; }
+.cmnty1 a.feh4blk:link {color: #003399; text-decoration:underline; }
+.mytable a {text-decoration:none; }
+
+/* rightnav attributes */
+.cmnty1 .rightnav  { color:#FFFFFF; padding-left: 11px; padding-top: 5px; padding-bottom: 5px }
+.cmnty1 td.rightnav a:link, .cmnty td.rightnav a:visited { color: #FFFFFF; text-decoration:none; }
+#rightcol td {background-color:#EEECE7; font-size:11px }
+#rightcol a {font-size:11px }
+#rightcol h1 {font-size:13px; margin:0px; color:maroon}
+
+
+/* head styles */
+.feh4wht { padding-top: 4px; padding-left: 6px; padding-bottom: 4px; color: #FFFFFF; }
+.ldrs { margin-left: 26px; font-weight: bold ;}
+.recentheader { font-size: 9pt; margin-top: 2px; margin-bottom: 2px; font-weight: bold; }
+.whtplain { color:#FFFFFF; }
+.wht { color:#FFFFFF; }
+
+/* bg and table styles */
+.newsoddrow { background-color: #DCDFE4; }
+.newsdkback { background-color: #DBDEE3; }
+.ltback { background-color: #E0E0E0; }
+.ltblue {background-color: #DCDFE4; padding-left:20px }
+.tblebrdr { border-right: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;}
+.orngbk { background-color: #FFCC00; }
+.graddkblu {Filter: Alpha(Opacity=100, FinishOpacity=80, Style=1 StartY=0, StartX=0, FinishY=255, FinishX=-100,); width: 100%; background-color: #535A68;}
+.gradbluvert {Filter: Alpha(Opacity=100, FinishOpacity=80, Style=1 StartY=0, StartX=0, FinishY=255, FinishX=-100,); width: 100%; background-color: #606C80;}
+div .tblcont {margin-left:10px; margin-top:8px; margin-bottom:10px; }
+.tblbg1 { border:1px solid black; background-color:#DCDFE4; margin:8px}
+
+/* positioning */
+.navpad { margin-left: 11px; margin-top: 5px; margin-bottom: 5px; font-weight:bold; font-size:10pt;}
+td.navpad a:link, td.navpad a:visited { text-decoration:none; color:white}
+td.navpad a:hover {color:#FFCC00; text-decoration:underline }
+
+.tblpad {  margin: 10px; padding: 10px}
+.rt { text-align: right; }
+.listpad {  margin-left: 4px;  margin-top: 4px; }
+ul.orngbul {list-style-image: url(/images/common/pagenav/arrow_orange.gif); }
+
+/*New right column classes*/
+#rcol {background-color:#ECF0F6; font-size:9pt; }
+#rcol td.pad  {padding:5px 5px 5px 11px; background-color:#ECF0F6; border-left:1px solid #2F4480; border-right:1px solid #2F4480}
+#rcol a {text-decoration:none; font-size:9pt}
+#rcol a:hover {text-decoration:underline}
+#rcol .topspot {background-color: #F2F3F7; padding:5px 5px 5px 11px; border-left:1px solid #2F4480; border-right:1px solid #2F4480}
+#rcol .pad h2 {font-size:99%}
+#rcol ul {margin-left:16px; list-style-image: url(/images/bullet_blue2.gif);  }
+
+/* small classes */
+.smallbldwht { color: #FFFFFF; }
+.smallgrey { color: gray}
+
+/* kludge for line wrapping in file exchange */
+.lnwrp a {word-wrap:break-word; width:300px; left:0; overflow:hidden;}
+
+/* IE and Firefox use different default properties for list indenting. */
+/* Zero them all out */
+ul,li {
+  margin-left: 0px;
+  padding-left: 0px;
+}
+/* Then set just one. */
+ul {
+  padding-left: 20px;
+}
+
+.cmnty1 .latest ul {margin-left:24px; margin-top:8px; margin-bottom:6px; list-style-type: square; list-style-image: url(/matlabcentral/images/bullet.gif); }
+.graytext {color: gray; padding-top: 6px; padding-bottom: 6px; word-wrap:break-word; width:400px; left:0; overflow:hidden;}
+.grayback {background-color:#DCDFE4; padding-top: 5px; padding-bottom: 5px; padding-left: 5px}
+td.grayback a.smplain:link {text-decoration:underline}
+td.grayback a.smplain:visited, td.grayback a.smplain:hover {text-decoration:none}
+table.navcell td a:link {color:white; text-decoration:none}
+table.navcell td a:visited {color:white; text-decoration:none}
+
+b a:hover span {text-decoration:underline}
+@media screen{
+textarea.monospace {width:500px}
+}
+/*New table styles*/
+/*NEW data table3 and 4*/
+.datatable3, .datatable4 { border:1px solid #D3D3D3; border-top:0 }
+.datatable3 td, .datatable4 td{ vertical-align: top; padding: 8px;}
+.datatable3 th, .datatable4 th { background-color:#2B5680; color:#FFFFFF; font-weight: bold; text-align:left ; padding: 4px 5px 4px 8px;}
+.datatable3 th a:link, .datatable3 th a:visited { text-decoration:underline; color:#FFFFFF}
+#bodycol .datatable3 .level2 a:link, #bodycol .datatable4 .level2 a:link {color: #0D2B98; font-weight: bold;}
+#bodycol .datatable3 .level2 a:visited, #bodycol .datatable4 .level2 a:visited {color: #405C9C; font-weight: bold;}
+table.datatable3 tr.level2 td, table.datatable4 tr.level2 td {background-color:#FFFFFF; color: #000000; font-weight: bold; text-align:left; padding: 4px 5px 4px 8px;}
+table.datatable3 tr td, table.datatable4 tr td {padding-left:8px}
+table.datatable3 td {background-color: #FFFFFF; border-top:1px solid #D3D3D3 }
+table.datatable4 td {background-color: #FFFFFF; }
+.filetable td {background-color:#F4F4F4; padding:3px 0}
+table.datatable3 span.small h1 {font-weight:normal; font-size:9pt; color:#000000}
+table.datatable3 td.lnwrp {word-wrap:break-word; left:0; overflow:hidden;}
+
+/*New Site Structure used in reports in FE*/
+#mainframe {margin-top:10px}
+#right_col a:link, #right_col a:visited{color:#FFFFFF}
+#right_col a:hover{text-decoration:underline; color:#FFFFFF}
+#right_col td {padding:6px 0 6px 8px}
+#right_col td.npad {padding:0}

@@ -1,0 +1,940 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<title>
+  MATLAB Central File Exchange - kmeans image segmentation
+</title>
+<link rel="stylesheet" href="loadFile.do_files/site3.css" type="text/css">
+<link rel="stylesheet" href="loadFile.do_files/cmnty1.css" type="text/css">
+</head><body class="cmnty1">
+<table id="header" summary="header table" width="752" border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td width="387"> <a href="http://www.mathworks.com/matlabcentral/"><img src="loadFile.do_files/mlc_logo.gif" alt="MATLAB Central" vspace="0" width="236" border="0" height="28" hspace="0"></a>
+		<div class="small">An open exchange for the MATLAB and Simulink user community</div></td>
+    <td width="383" align="right">
+<script language="JavaScript">
+
+function submitForm(query){
+
+choice = document.forms['searchForm'].elements['search_submit'].value;
+
+if (choice == "entire1" || choice == "entire2" || choice == "contest" || choice == "matlabcentral" || choice == "blogs"){
+
+   var searchInputNames = new Array("db","prox","rorder","rprox","rdfreq","rwfreq","rlead","sufs","order","is_summary_on","ResultCount");
+   var searchInputValues = new Array("MSS","page","750","750","500","500","250","0","r","1","10");
+
+   for (var i=0; i<searchInputNames.length; i++){
+      var newElem = document.createElement("input");
+      newElem.type = "hidden";
+      newElem.name = searchInputNames[i];
+      newElem.value = searchInputValues[i];
+      document.forms['searchForm'].appendChild(newElem);
+   }
+
+   submit_action = '/cgi-bin/texis/webinator/search/';
+}
+
+switch(choice){
+   case "matlabcentral":
+      var newElem = document.createElement("input");
+      newElem.type = "hidden";
+      newElem.name = "matlabcentral";
+      newElem.value = "Matlabcentral";
+      document.forms['searchForm'].appendChild(newElem);
+
+      selected_index = 0;
+      break
+   case "fileexchange":
+      noiselist = new Array("about","after","also","an","and","another","any","are","as","at","be","$","because",
+      "been","before","being","between","both","but","by","came","can","come","could","did","do","each","from",
+      "got","has","had","he","have","her","here","him","himself","his","how","if","in","into","is","it","like",
+      "many","me","might","most","much","must","my","never","of","on","or","other","our","out","said","same",
+      "see","should","since","some","still","such","than","that","the","their","them","then","there","these",
+      "they","this","those","through","to","too","up","very","was","way","we","well","were","who","with",
+      "would","you","your","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t",
+      "u","v","w","x","y","z");
+
+      query_holder = query.value;
+
+      for(i=0;i<noiselist.length;++i) {
+            var mid = new RegExp(" " + noiselist[i] + " ","gi");
+            query_holder = query_holder.replace(mid," ");
+            mid = new RegExp("^" + noiselist[i] + " ","i");
+            query_holder = query_holder.replace(mid," ");
+            mid = new RegExp(" " + noiselist[i] + "$","i");
+            query_holder = query_holder.replace(mid,"");
+      }
+
+      var newElem = document.createElement("input");
+      newElem.type = "hidden";
+      newElem.name = "objectType";
+      newElem.value = "search";
+      document.forms['searchForm'].appendChild(newElem);
+
+      var newElem = document.createElement("input");
+      newElem.type = "hidden";
+      newElem.name = "criteria";
+      newElem.value = query.value;
+      document.forms['searchForm'].appendChild(newElem);
+
+      submit_action = "/matlabcentral/fileexchange/loadFileList.do";
+      selected_index = 1;
+      break
+   case "cssm":
+      var newElem = document.createElement("input");
+      newElem.type = "hidden";
+      newElem.name = "search_string";
+      newElem.value = query.value;
+      newElem.classname = "formelem";
+      document.forms['searchForm'].appendChild(newElem);
+
+			submit_action = "/matlabcentral/newsreader/search_results";
+      selected_index = 2;
+      break
+   case "linkexchange":
+      submit_action = "/cgi-bin/matlab/search.cgi";
+      selected_index = 3;
+      break
+   case "blogs":
+      var newElem = document.createElement("input");
+      newElem.type = "hidden";
+      newElem.name = "blogs";
+      newElem.value = "Blogs";
+      document.forms['searchForm'].appendChild(newElem);
+
+      selected_index = 4;
+      break
+   case "contest":
+      var newElem = document.createElement("input");
+      newElem.type = "hidden";
+      newElem.name = "contest";
+      newElem.value = "Contest";
+      document.forms['searchForm'].appendChild(newElem);
+
+      selected_index = 5;
+      break
+   case "entire1":
+      selected_index = 6;
+      break
+   case "entire2":
+      selected_index = 7;
+      break
+   default:
+      selected_index = 7;
+      break
+}
+
+document.forms['searchForm'].elements['search_submit'].selectedIndex = selected_index;
+document.forms['searchForm'].elements['query'].value = query.value;
+document.forms['searchForm'].action = submit_action;
+
+}
+
+</script>
+
+  <form name="searchForm" method="post" action="" style="margin: 5px 0px 0px; font-size: 90%;" onsubmit="submitForm(query)">
+          <label for="search">Search:</label>
+        <select name="search_submit" style="font-size: 9px;">
+          <option value="matlabcentral">MATLAB Central</option>
+          <option value="fileexchange" selected="selected">&nbsp;&nbsp;&nbsp;File Exchange</option>
+          <option value="cssm">&nbsp;&nbsp;&nbsp;MATLAB Newsgroup</option>
+          <option value="linkexchange">&nbsp;&nbsp;&nbsp;Link Exchange</option>
+          <option value="blogs">&nbsp;&nbsp;&nbsp;Blogs</option>
+          <option value="contest">&nbsp;&nbsp;&nbsp;Programming Contest</option>
+          <option value="entire1">MathWorks.com</option>
+          <option value="entire2">&nbsp;&nbsp;&nbsp;All of MathWorks.com</option>
+        </select>
+<input name="query" size="10" class="formelem" value="" type="text">
+<input name="search" value=" Go " class="formelem" style="background-color: rgb(30, 63, 116); color: rgb(255, 255, 255); font-size: 90%;" type="submit">
+</form>
+
+    </td>
+  </tr>
+</tbody></table>
+
+
+
+
+
+<div style="margin: -10px 0px 15px; width: 752px; text-align: right;">
+  
+    <a href="https://www.mathworks.com/accesslogin/index_fe.do?uri=http://www.mathworks.com%2Fmatlabcentral%2Ffileexchange%2FloadFile.do%3FobjectId%3D8379%26objectType%3Dfile">Login</a>
+  
+</div>
+
+
+<table id="topnav" summary="top navigation" width="752" border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr id="topnavitems">
+    <td id="tcell1" class="activebg" onmouseover="this.className='hover'" onmouseout="this.className='activebg'" onclick="document.location='/matlabcentral/fileexchange/'" align="center"><div style="border-right: 1px solid gray;"> <a id="tmenu1" href="http://www.mathworks.com/matlabcentral/fileexchange/">File Exchange</a> </div></td>
+    <td id="tcell2" onmouseover="this.className='hover'" onmouseout="this.className=';'" onclick="document.location='/matlabcentral/newsreader/'" align="center"><div style="border-right: 1px solid gray;"> <a id="tmenu2" href="http://www.mathworks.com/matlabcentral/newsreader/">MATLAB Newsgroup</a> </div></td>
+    <td id="tcell3" onmouseover="this.className='hover'" onmouseout="this.className=';'" onclick="document.location='/matlabcentral/link_exchange/'" align="center"><div style="border-right: 1px solid gray;"> <a id="tmenu3" href="http://www.mathworks.com/matlabcentral/link_exchange/">Link Exchange</a> </div></td>
+    <td id="tcell4" onmouseover="this.className='hover'" onmouseout="this.className=';'" onclick="document.location='http://blogs.mathworks.com/'" align="center"><div style="border-right: 1px solid gray;"> <a id="tmenu4" href="http://blogs.mathworks.com/">&nbsp;&nbsp;Blogs&nbsp;&nbsp;</a> </div></td>
+    <td id="tcell4" onmouseover="this.className='hover'" onmouseout="this.className=';'" onclick="document.location='/contest/'" align="center"><div style="border-right: 1px solid gray;"> <a id="tmenu4" href="http://www.mathworks.com/contest/">Contest</a>  </div></td>
+    <!--<td id="tcell5" align="center" onMouseOver="this.className='hover'" onMouseOut="this.className=';'" onClick="document.location='/contest/'"><div style="border-right:1px solid gray"> <a id="tmenu5" href="/matlabcentral/wiki.html">&nbsp;&nbsp;Wiki&nbsp;&nbsp;</a></div></td>-->
+    <td id="tcell6" onmouseover="this.className='hover'" onmouseout="this.className=';'" onclick="document.location='/'" align="center"><a id="tmenu6" href="http://www.mathworks.com/">MathWorks.com</a> </td>
+  </tr>
+</tbody></table>
+
+<br>
+
+
+<div class="type1">
+<table width="752" border="0" cellpadding="0" cellspacing="0">
+ <tbody><tr>
+   <td>
+
+    
+
+
+
+
+
+
+
+
+<div class="type2">
+<table width="180" align="right" border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td class="npad"><img src="loadFile.do_files/dots_rnav_top.gif" alt="" vspace="0" width="180" height="9" hspace="0"></td>
+  </tr>
+  <tr>
+    <td class="npad" valign="top">
+     <table style="background-color: rgb(53, 106, 159);" class="navcell" width="180" align="right" border="0" cellpadding="0" cellspacing="0">
+
+      
+      
+      
+      
+      
+
+        <tbody><tr>
+          <td class="npad"><img src="loadFile.do_files/ltblue_top_nav_trans.gif" alt="" vspace="0" width="180" height="6"></td>
+        </tr>
+        
+
+        <!--links will not work from here on only in LOCAL environment because of path -->
+
+        <tr>
+          <td width="164">
+            <a href="http://www.mathworks.com/matlabcentral/fileexchange/loadFile.do"><img src="loadFile.do_files/submitfile.gif" alt="" width="11" border="0" height="11" hspace="0">
+              <strong>Submit a File</strong></a><br>
+
+              <a href="http://www.mathworks.com/matlabcentral/fileexchange/codepad.jsp" onclick="window.open(this.href,'small','location=no,toolbar=no,resizable=yes,status=yes,menu=no,scrollbars=yes,width=800,height=830');return false;" class="undrln">Now accepting MATLAB<br>Published M-files</a>.
+              </td>
+        </tr>
+
+
+
+
+
+        <tr>
+            <td class="npad"><img src="loadFile.do_files/ltblue_top_nav_trans.gif" alt="" vspace="0" width="180" height="6"></td>
+        </tr>
+        <tr>
+            <td width="164"> <a href="http://www.mathworks.com/matlabcentral/fileexchange/loadAuthorIndex.do"><img src="loadFile.do_files/bullet.gif" alt="" width="5" border="0" height="7" hspace="0">
+              Author Index</a> <br>
+              <a href="http://www.mathworks.com/matlabcentral/fileexchange/loadFileList.do?objectType=fileexchange&amp;orderBy=date&amp;srt3=0"><img src="loadFile.do_files/bullet.gif" alt="" width="5" border="0" height="7" hspace="0">
+              Most Recent Files</a>
+              <a href="http://www.mathworks.com/company/rss/feeds/mostRecentFiles.rss"><img src="loadFile.do_files/xmlicon_30x12.gif" alt="" align="bottom" border="0"></a>
+              <br>
+              <a href="http://www.mathworks.com/matlabcentral/fileexchange/loadFileList.do?objectType=fileexchange&amp;orderBy=totalDown&amp;srt4=0"><img src="loadFile.do_files/bullet.gif" alt="" width="5" align="bottom" border="0" height="7" hspace="0">
+              Most Downloaded</a>
+              <a href="http://www.mathworks.com/company/rss/feeds/mostDownloadedFiles.rss"><img src="loadFile.do_files/xmlicon_30x12.gif" alt="" border="0"></a>
+              <br>
+              <a href="http://www.mathworks.com/matlabcentral/fileexchange/loadThumbIndex.do"><img src="loadFile.do_files/bullet.gif" alt="" width="5" border="0" height="7" hspace="0">
+              Screenshot Index</a> <br>
+              <a href="http://www.mathworks.com/matlabcentral/reports/fileexchange/ratingsAndComments/"><img src="loadFile.do_files/bullet.gif" alt="" width="5" border="0" height="7" hspace="0">
+              Most Recent Comments</a> <br>
+              <a href="http://www.mathworks.com/matlabcentral/fileexchange/filesByProduct.do"><img src="loadFile.do_files/bullet.gif" alt="" width="5" border="0" height="7" hspace="0">
+              Files By Product</a> <br>
+              <a href="http://www.mathworks.com/matlabcentral/reports/fileexchange/"><img src="loadFile.do_files/bullet.gif" alt="" width="5" border="0" height="7" hspace="0">
+              Metrics and Reports</a> <br>
+
+              </td>
+
+        </tr>
+        <tr>
+          <td class="npad"><img src="loadFile.do_files/ltblue_top_nav_trans.gif" alt="" vspace="0" width="180" height="6"></td>
+        </tr>
+
+        
+        <tr>
+          <td>
+            <img src="loadFile.do_files/bullet.gif" alt="" width="5" border="0" height="7" hspace="0">&nbsp;<a href="http://www.mathworks.com/matlabcentral/fileexchange/download.do?objectId=8379&amp;fn=kmeans&amp;fe=.m&amp;cid=1094697">Download this File</a><br>
+            
+            </td>
+        </tr>
+        <tr>
+          <td class="npad"><img src="loadFile.do_files/ltblue_top_nav_trans.gif" alt="" vspace="0" width="180" height="6"></td>
+        </tr>
+        
+
+
+
+       
+          <tr>
+            <td><span style="color: white;">Notify me when changes are made to this file</span><br>
+                <form name="uForm" method="post" action="/matlabcentral/fileexchange/util.do"><input name="org.apache.struts.taglib.html.TOKEN" value="0740dcbccf087b9f0117ab9e090cbb68" type="hidden">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                  <tbody><tr>
+                    <td><span style="color: white;">E-mail:</span></td>
+                    <td> <input name="emailAddress" size="10" value="" class="formelem" type="text"> </td>
+                  </tr>
+                  <tr>
+                    <td><img src="loadFile.do_files/spacer.gif" alt="" width="1" height="6"></td>
+                    <td><img src="loadFile.do_files/spacer.gif" alt="" width="1" height="6"></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <input name="subscribe" value="Notify Me" class="formelem" type="submit">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><img src="loadFile.do_files/spacer.gif" alt="" width="1" height="6"></td>
+                    <td><img src="loadFile.do_files/spacer.gif" alt="" width="1" height="6"></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2"><a href="http://www.mathworks.com/matlabcentral/fileexchange/unsubscribe.jsp" onclick="window.open(this.href,'small','toolbar=no,resizable=yes,status=yes,menu=no,scrollbars=yes,width=544,height=300');return false;"><img src="loadFile.do_files/question.gif" alt="" width="11" border="0" height="11">&nbsp;How
+                      do I unsubscribe?</a> </td>
+                  </tr>
+
+                </tbody></table>
+                <input name="objectId" value="8379" type="hidden">
+                <input name="objectType" value="file" type="hidden">
+                <input name="catId" value="138" type="hidden">
+                </form> </td>
+          </tr>
+          <tr>
+            <td class="npad"><img src="loadFile.do_files/ltblue_top_nav_trans.gif" alt="" vspace="0" width="180" height="6"></td>
+          </tr>
+          
+          <tr>
+            <td colspan="2">
+              <a href="javascript:PopUp('/cgi-bin/page_mail_mlc.cgi?language=en&amp;host=www.mathworks.com&amp;document=www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=8379%26objectType=file','page_mail',true)"><img src="loadFile.do_files/mail_brdr.gif" alt="email" width="16" border="0" height="12">
+              E-mail this page to <br>
+              <span style="padding-left: 18px;">a colleague</span></a>
+
+            </td>
+          </tr>
+         <tr>
+           <td class="npad" valign="top"><img src="loadFile.do_files/dots_rnav.gif" alt="" vspace="0" width="180" height="5"></td>
+         </tr>
+
+
+  </tbody></table>
+
+ </td>
+ </tr>
+</tbody></table>
+
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+function PopUp(page,title,which)
+{
+  if (which==true) {
+   OpenWin = this.open('/cgi-bin/page_mail_mlc.cgi?language=en&host=www.mathworks.com&document=www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=8379%26objectType=file', title, "toolbar=no,menubar=no,location=no,scrollbars=yes,resize=yes,height=385,width=440");
+  } else {
+   OpenWin = this.open('/cgi-bin/page_mail_mlc.cgi?language=en&host=www.mathworks.com&document=www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=8379%26objectType=file', title, "toolbar=no,menubar=no,location=no,scrollbars=yes,resize=no,height=150,width=300");
+  }
+}
+//-->
+</script>
+
+    
+
+
+
+
+      <table id="breadcrmb" width="572" border="0" cellpadding="0" cellspacing="0">
+         <tbody><tr>
+            <td class="brdcrmbcell" height="20">
+            <a href="http://www.mathworks.com/matlabcentral/">MATLAB Central</a> &gt;&nbsp;
+            <a href="http://www.mathworks.com/matlabcentral/fileexchange/loadCategory.do">File Exchange</a> &gt; <a href="http://www.mathworks.com/matlabcentral/fileexchange/loadCategory.do?objectId=26&amp;objectType=Category">Image Processing</a> &gt; <a href="http://www.mathworks.com/matlabcentral/fileexchange/loadCategory.do?objectId=138&amp;objectType=Category">Morphology and Segmentation</a> &gt; kmeans image segmentation 
+            </td>
+         </tr>
+      </tbody></table>
+
+
+
+    <div class="mainbody">
+    <table style="background-color: rgb(255, 255, 255);" width="536" border="0" cellpadding="0" cellspacing="0">
+     <tbody><tr>
+      <td>
+        <table width="514" border="0" cellpadding="0" cellspacing="0">
+          <tbody><tr>
+             <td colspan="2"><table width="514" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0">
+<tbody><tr><td class="headercell" width="70%" height="20">&nbsp;kmeans image segmentation&nbsp;
+</td><td class="headercell" width="30%" align="right">&nbsp;</td></tr>
+<tr><td colspan="2">
+<img src="loadFile.do_files/blue_band_536x5.gif" width="536" height="5"></td>
+</tr></tbody></table>
+</td>
+          </tr>
+        </tbody></table>
+      </td>
+      </tr>
+    </tbody></table>
+    <form name="dnlForm" method="post" action="/matlabcentral/fileexchange/download.do" style="margin-top: 0pt;"><input name="org.apache.struts.taglib.html.TOKEN" value="0740dcbccf087b9f0117ab9e090cbb68" type="hidden">
+    <table class="filetable" width="536" border="0" cellpadding="0" cellspacing="0">
+      
+            <tbody><tr>
+             <td colspan="4">
+               <table width="160" align="right" border="0" cellpadding="0" cellspacing="0">
+                   <tbody><tr>
+                      <td id="scrnshot" valign="top">
+                      <div align="center"><a href="http://www.mathworks.com/matlabcentral/fileexchange/util.do?objectId=8379&amp;imgName=demo.JPG" onclick="window.open(this.href,'small','toolbar=no,resizable=yes,status=yes,menu=no,scrollbars=yes,width=700,height=600');return false;">
+                       <img src="loadFile.do_files/preview.jpg" alt="" vspace="10" border="0"><br>
+                       View fullsize image</a></div>
+                       </td>
+                  </tr>
+              </tbody></table>
+              <table width="376" border="0" cellpadding="0" cellspacing="0">
+
+         
+          
+          <tbody><tr>
+            <td valign="top" width="10">&nbsp;</td>
+            <td><div style="padding-right: 10px;"><b>Download Now:</b></div></td>
+            <td><input name="Submit" value=" .m " class="small" type="submit"></td>
+
+          </tr>
+          
+          <tr>
+          <td valign="top" width="10">&nbsp;</td>
+            <td valign="top"><b>Rating:</b>
+              
+            </td>
+            <td>
+
+              
+              
+              
+
+              
+		
+                 <img src="loadFile.do_files/fullstar.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar_grey.gif" alt="" width="12" height="12" hspace="1">
+                
+
+                   <div style="margin-left: 20px; display: inline;">
+                   	<a href="http://www.mathworks.com/matlabcentral/fileexchange/loadRatings.do?objectId=8379&amp;objectType=file&amp;all" class="small">
+                             
+                             	24 reviews</a>
+                             
+                  &nbsp;&nbsp;<b><a href="http://www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=8379&amp;objectType=file#review_submission" class="small">Review this file</a></b>
+            	   </div>
+               
+
+            </td>
+          </tr>
+
+          
+            <tr>
+              <td valign="top" width="10">&nbsp;</td>
+              <td valign="top"><b>Code Metrics:</b></td>
+              <td>
+
+                <table cellpadding="0" cellspacing="0">
+                  <tbody><tr>
+                    <td width="75">
+                      <table border="0" cellpadding="0" cellspacing="1">
+                        <tbody><tr>
+                          <td><img src="loadFile.do_files/40th.png" title="Complexity (44th percentile, raw score: 9)" width="11" border="0" height="10"></td>
+                          <td><img src="loadFile.do_files/30th.png" title="M-Lint (38th percentile, raw score: 2.0)" width="11" border="0" height="10"></td>
+                          <td><img src="loadFile.do_files/50th.png" title="Help (56th percentile, raw score: 1.0)" width="11" border="0" height="10"></td>
+                          <td><img src="loadFile.do_files/00th.png" title="Clash (7th percentile, raw score: 1)" width="11" border="0" height="10"></td>
+                          <td><img src="loadFile.do_files/90th.png" title="Cloned (100th percentile, raw score: 0)" width="11" border="0" height="10"></td>
+                        </tr>
+                      </tbody></table>
+                    </td>
+                    <td>
+                      <div style="margin-left: 10px; display: inline;">
+                        <a href="http://www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=8379&amp;objectType=scoreDetails" class="small">Full report</a>&nbsp;&nbsp;
+                      </div>
+                      <br>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <img src="loadFile.do_files/question.gif" alt="" width="9" border="0" height="11">&nbsp;<a href="http://www.mathworks.com/matlabcentral/fileexchange/codeMetricsPopup.jsp" onclick="window.open(this.href,'small','toolbar=no,resizable=yes,status=yes,menu=no,scrollbars=yes,width=571,height=450');return false;" class="small">What is this?</a>
+                    </td>
+                  </tr>
+                </tbody></table>
+
+              </td>
+            </tr>
+          
+
+
+          
+          <tr>
+            <td valign="top" width="10">&nbsp;</td>
+            <td valign="top" width="89"><b>Author:</b></td>
+            <td colspan="2"><a href="http://www.mathworks.com/matlabcentral/fileexchange/loadAuthor.do?objectType=author&amp;objectId=1094697">Jose Vicente&nbsp;Manjon-Herrera</a></td>
+          </tr>
+          <tr>
+            <td valign="top" width="10" height="15">&nbsp;</td>
+            <td valign="top" width="89" height="15"><b>Summary:</b></td>
+            <td colspan="2" height="15">Application of kmeans clustering algorithm to segment a grey scale image on diferent classes.</td>
+          </tr>
+          <tr>
+            <td valign="top" width="10" height="15">&nbsp;</td>
+            <td valign="top" width="125" height="15"><b>MATLAB Release:</b></td>
+            <td colspan="2" valign="bottom" height="15">R13SP1</td>
+          </tr>
+
+          
+
+          
+
+          
+
+         
+               </tbody></table>
+             </td>
+            </tr>
+         
+
+          <tr>
+            <td valign="top" width="10">&nbsp;</td>
+            <td valign="top" width="135"><b>Description:</b></td>
+            <td class="lnwrp" width="456">
+This program gets an image and the desidered number of partitions and
+finds the means of the different classes and provides a clasified image<br>
+(mask).  <br>
+            </td>
+         </tr>
+
+        
+
+           <tr>
+               <td valign="top" width="10">&nbsp;</td>
+               <td colspan="3" valign="top">&nbsp; </td>
+           </tr>
+     </tbody></table>
+
+     <input name="fileId" value="8379" type="hidden">
+     <input name="fileName" value="kmeans" type="hidden">
+     <input name="fileExt" value=".m" type="hidden">
+     <input name="contributorId" value="1094697" type="hidden">
+     </form>
+     <br>
+     <table style="background-color: rgb(255, 255, 255);" width="536" border="0" cellpadding="0" cellspacing="0">
+       <tbody><tr>
+         <td>
+          <table width="514" border="0" cellpadding="0" cellspacing="0">
+            <tbody><tr>
+              <td width="286"> <b class="feh4blk"> File Details</b></td>
+              <td width="228">&nbsp;</td>
+            </tr>
+            <tr>
+              <td colspan="2"><img src="loadFile.do_files/blue_band_536x5.gif" alt="" width="536" height="5"></td>
+            </tr>
+          </tbody></table>
+          </td>
+          </tr>
+      </tbody></table>
+      <table width="536" border="0" cellpadding="0" cellspacing="0">
+          <tbody><tr bgcolor="#f4f4f4">
+            <td colspan="5" valign="top">&nbsp;</td>
+
+          </tr>
+          <tr bgcolor="#f4f4f4">
+            <td valign="top" width="1%">&nbsp;</td>
+            <td valign="top" width="25%"><b>File Id:</b></td>
+            <td width="20%">8379</td>
+            <td valign="top" width="25%"><b>Average rating:</b></td>
+            <td width="29%">4.18</td>
+          </tr>
+          <tr bgcolor="#f4f4f4">
+            <td valign="top">&nbsp;</td>
+            <td valign="top"><b>Size:</b></td>
+            <td>1 KB</td>
+            <td valign="top"><b># of reviews:</b></td>
+            <td>24</td>
+          </tr>
+
+          <tr bgcolor="#f4f4f4">
+            <td valign="top">&nbsp;</td>
+            <td valign="top"><b>Submitted:</b></td>
+            <td>2005-08-28</td>
+            <td valign="top"><b>Downloads:</b></td>
+            <td>13826</td>
+          </tr>
+
+          <tr bgcolor="#f4f4f4">
+            <td valign="top">&nbsp;</td>
+            <td valign="top"><b>Subscribers:</b></td>
+            <td>2</td>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+
+          <tr bgcolor="#f4f4f4">
+            <td>&nbsp;</td>
+            <td valign="top"><b>Keywords:</b></td>
+            <td colspan="3" valign="top">kmeans segmentation</td>
+          </tr>
+
+          
+          <tr bgcolor="#f4f4f4">
+             <td valign="top" width="10">&nbsp;</td>
+             <td colspan="4" valign="top">&nbsp;</td>
+         </tr>
+         
+     </tbody></table>
+    <br>
+    <!--Acknowledgements -->
+    
+     <!--Acknowledgements -->
+
+      
+
+
+
+
+
+
+
+
+
+<br>
+<table style="background-color: rgb(255, 255, 255);" width="536" border="0" cellpadding="0" cellspacing="0">
+    <tbody><tr>
+      <td>
+      <table width="514" border="0" cellpadding="0" cellspacing="0">
+          <tbody><tr>
+            <td width="286"> <b class="feh4blk"> User Reviews</b></td>
+            <td width="228"> <div class="small" align="right">Number
+                of Reviews: 24</div></td>
+          </tr>
+          <tr>
+            <td colspan="2"><img src="loadFile.do_files/blue_band_536x5.gif" alt="" width="536" height="5"></td>
+          </tr>
+        </tbody></table></td>
+    </tr>
+ </tbody></table>
+
+ 
+   <table width="536" border="0" cellpadding="3" cellspacing="0">
+
+  
+      <tbody><tr>
+        <td width="9" bgcolor="#dcdfe4"></td>
+        <td bgcolor="#dcdfe4"><b>Date</b>: 2008-05-09<br>
+          <strong>From</strong>: Chris&nbsp;Yang  <br>
+          <strong>Rating</strong>:
+          
+              <img src="loadFile.do_files/fullstar.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar_grey.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar_grey.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar_grey.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar_grey.gif" alt="" width="12" height="12" hspace="1">
+	  
+          <br>
+          
+                <strong>Comments</strong>: please help me, how to use this code  
+          
+        </td>
+      </tr>
+      <tr>
+        <td width="10" bgcolor="#dcdfe4"></td>
+
+      </tr>
+ 
+      <tr>
+        <td width="9" bgcolor="#dcdfe4"></td>
+        <td bgcolor="#dcdfe4"><b>Date</b>: 2008-02-19<br>
+          <strong>From</strong>: Gustavo&nbsp;MESCHINO (gmeschin@fi.mdp.edu.ar) <br>
+          <strong>Rating</strong>:
+          
+              <img src="loadFile.do_files/fullstar.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar.gif" alt="" width="12" height="12" hspace="1">
+	  
+          <br>
+          
+                <strong>Comments</strong>: Very fast implementation!<br>
+It would be great if it is improved to enter more than one input image.  
+          
+        </td>
+      </tr>
+      <tr>
+        <td width="10" bgcolor="#dcdfe4"></td>
+
+      </tr>
+ 
+      <tr>
+        <td width="9" bgcolor="#dcdfe4"></td>
+        <td bgcolor="#dcdfe4"><b>Date</b>: 2008-02-05<br>
+          <strong>From</strong>: Adrian&nbsp;López (adrianl_98@yahoo.com) <br>
+          <strong>Rating</strong>:
+          
+              <img src="loadFile.do_files/fullstar.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar.gif" alt="" width="12" height="12" hspace="1"><img src="loadFile.do_files/fullstar_grey.gif" alt="" width="12" height="12" hspace="1">
+	  
+          <br>
+          
+                <strong>Comments</strong>:   
+          
+        </td>
+      </tr>
+      <tr>
+        <td width="10" bgcolor="#dcdfe4"></td>
+
+      </tr>
+ 
+  </tbody></table>
+  <br>
+
+  
+        <img src="loadFile.do_files/submitfile.gif" alt="" width="9" border="0" height="11">
+        <a href="http://www.mathworks.com/matlabcentral/fileexchange/loadRatings.do?objectId=8379&amp;objectType=file&amp;all=true">See more reviews</a>
+  
+
+ 
+
+
+<form name="rForm" method="post" action="/matlabcentral/fileexchange/saveRating.do"><input name="org.apache.struts.taglib.html.TOKEN" value="0740dcbccf087b9f0117ab9e090cbb68" type="hidden">
+<input name="objectType" value="file" type="hidden">
+<input name="objectId" value="8379" type="hidden">
+
+<br>
+  <table style="background-color: rgb(255, 255, 255);" width="536" border="0" cellpadding="0" cellspacing="0">
+    <tbody><tr>
+      <td> <table width="514" border="0" cellpadding="0" cellspacing="0">
+          <tbody><tr>
+            <td width="286"> <b class="feh4blk"><a name="review_submission"> Review this Submission</a></b></td>
+            <td width="240"> <div align="right"> <img src="loadFile.do_files/doc.gif" alt="" width="9" border="0" height="11">
+              <a href="http://www.mathworks.com/matlabcentral/fileexchange/ratingGuidelines.jsp" onclick="window.open(this.href,'small','toolbar=no,resizable=yes,status=yes,menu=no,scrollbars=yes,width=536,height=320');return false;">Guidelines for Reviewing a Submission</a></div></td>
+          </tr>
+          <tr>
+            <td colspan="2"><img src="loadFile.do_files/blue_band_536x5.gif" alt="" width="536" height="5"></td>
+          </tr>
+        </tbody></table></td>
+    </tr>
+  </tbody></table>
+  <table width="536" bgcolor="#dcdfe4" border="0" cellpadding="2" cellspacing="2">
+    <tbody><tr valign="top">
+      <td colspan="3"><b><img src="loadFile.do_files/exclamation.gif" alt="" width="12" height="11">
+        Bold Indicates Required Information</b> </td>
+    </tr>
+    <tr valign="top">
+      <td width="89"> Overall Rating: </td>
+    </tr>
+    <tr>
+      <td align="left">
+         <table width="272" bgcolor="#dcdfe4" border="0" cellpadding="2" cellspacing="2">
+            <tbody><tr class="small" align="left">
+               <td colspan="3"><input name="numericRating" value="0" checked="checked" type="radio">&nbsp;<span class="small">General Comments</span>&nbsp;&nbsp;</td>
+            </tr>
+            <tr class="small" align="left">
+               <td colspan="3"><input name="numericRating" value="1" type="radio">&nbsp;1&nbsp;&nbsp;<span class="small">Poor</span></td>
+            </tr>
+            <tr class="small" align="left">
+               <td colspan="3"><input name="numericRating" value="2" type="radio">&nbsp;2&nbsp;&nbsp;<span class="small">Needs Improvement</span></td>
+            </tr>
+            <tr class="small" align="left">
+               <td colspan="3"><input name="numericRating" value="3" type="radio">&nbsp;3&nbsp;&nbsp;<span class="small">Fair</span></td>
+            </tr>
+            <tr class="small" align="left">
+               <td colspan="3"><input name="numericRating" value="4" type="radio">&nbsp;4&nbsp;&nbsp;<span class="small">Good</span></td>
+            </tr>
+            <tr class="small" align="left">
+               <td colspan="3"><input name="numericRating" value="5" type="radio">&nbsp;5&nbsp;&nbsp;<span class="small">Excellent</span></td>
+            </tr>
+            <tr>
+              <td colspan="3">&nbsp;</td>
+            </tr>
+            <tr>
+               <td>Comments:</td>
+               <td width="175">&nbsp;</td>
+               <td width="248">&nbsp;</td>
+            </tr>
+            <tr>
+               <td colspan="3">
+                  <textarea name="comment" cols="45" rows="5"></textarea>
+               </td>
+            </tr>
+            <tr>
+               <td><b>First Name:</b></td>
+               <td><input name="firstName" size="25" value="" type="text"></td>
+               <td align="right">&nbsp;</td>
+            </tr>
+            <tr>
+               <td><b>Last Name:</b></td>
+               <td><input name="lastName" size="25" value="" type="text"></td>
+               <td align="right">&nbsp;</td>
+            </tr>
+            <tr>
+               <td>E-mail:</td>
+               <td><input name="email" size="25" value="" type="text"></td>
+               <td align="right">&nbsp;</td>
+            </tr>
+            <tr>
+               <td>Organization:</td>
+               <td><input name="organization" size="25" value="" type="text"></td>
+               <td align="right">&nbsp;</td>
+            </tr>
+
+            <tr>
+               <td></td>
+               <td><img src="loadFile.do_files/Captcha.htm"></td>
+               <td align="right">&nbsp;</td>
+            </tr>
+            <tr>
+               <td><b>Spam Prevention:</b></td>
+               <td><input name="spamPrevention" size="25" value="" type="text"></td>
+               <td align="right">&nbsp;</td>
+            </tr>
+            <tr>
+               <td colspan="2">Please type the characters you see in the picture above.</td>
+               <td align="right">&nbsp;</td>
+            </tr>
+
+            <tr>
+               <td width="10" align="right">&nbsp; </td>
+               <td align="right"><input name="SubmitRating" value="Submit Rating" class="small" type="submit"></td>
+               <td align="right">&nbsp;</td>
+            </tr>
+            <tr>
+               <td colspan="3">&nbsp; </td>
+            </tr>
+        </tbody></table>
+      </td>
+    </tr>
+  </tbody></table>
+
+ </form>
+
+
+
+
+
+
+  <!--Modification Comments -->
+    
+
+  <br>
+   <table style="background-color: rgb(255, 255, 255);" width="536" border="0" cellpadding="0" cellspacing="0">
+        <tbody><tr>
+          <td>
+            <table width="514" border="0" cellpadding="0" cellspacing="0">
+              <tbody><tr>
+                <td width="286"> <b class="feh4blk"></b></td>
+                <td width="228">&nbsp;</td>
+              </tr>
+              <tr>
+                <td colspan="2"><img src="loadFile.do_files/blue_band_536x5.gif" alt="" width="536" height="5"></td>
+              </tr>
+            </tbody></table>
+            </td>
+         </tr>
+       </tbody></table>
+
+      <form name="dnlForm" method="post" action="/matlabcentral/fileexchange/download.do" style="margin-top: 0pt;"><input name="org.apache.struts.taglib.html.TOKEN" value="0740dcbccf087b9f0117ab9e090cbb68" type="hidden">
+      <table width="536" border="0" cellpadding="0" cellspacing="0">
+          <tbody><tr bgcolor="#f4f4f4">
+            <td valign="top" width="10" bgcolor="#dcdfe4">&nbsp;</td>
+            <td colspan="2" width="456" bgcolor="#dcdfe4"><strong>Download Now:</strong>
+                <input name="Submit" value=" .m " class="small" type="submit">
+            </td>
+          </tr>
+
+      </tbody></table>
+
+      <input name="fileId" value="8379" type="hidden">
+     <input name="fileName" value="kmeans" type="hidden">
+     <input name="fileExt" value=".m" type="hidden">
+     <input name="contributorId" value="1094697" type="hidden">
+     </form>
+      </div>
+     </td>
+   </tr>
+ </tbody></table>
+ </div>
+ <br><br>
+<br>
+<table width="543" border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td colspan="2" style="padding-left: 10px;">
+                <div class="smallgrey">
+		<strong>Public Submission Policy</strong><br>
+NOTICE: Any content you submit to MATLAB Central, including personal
+information, is not subject to the protections which may be afforded
+information collected under other sections of The MathWorks, Inc. Web
+site. You are entirely responsible for all content that you upload,
+post, e-mail, transmit or otherwise make available via MATLAB Central.
+The MathWorks does not control the content posted by visitors to MATLAB
+Central and, does not guarantee the accuracy, integrity, or quality of
+such content. Under no circumstances will The MathWorks be liable in
+any way for any content not authored by The MathWorks, or any loss or
+damage of any kind incurred as a result of the use of any content
+posted, e-mailed, transmitted or otherwise made available via MATLAB
+Central. <a href="http://www.mathworks.com/matlabcentral/disclaimer.html" class="small">Read the complete Disclaimer prior to use.</a>
+              </div>
+  </td>
+ </tr>
+ </tbody></table>
+<br>
+
+<table id="relatedtopics" width="543" border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+				<td><strong>Related Topics </strong></td>
+		</tr>
+		<tr>
+				<td id="topicslinks"> <a href="http://www.mathworks.com/products/new_products/index.html">New Products</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.mathworks.com/support/">Support</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.mathworks.com/access/helpdesk/help/helpdesk.html">Documentation</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.mathworks.com/services/training/">Training</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.mathworks.com/company/events/">Webinars</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.mathworks.com/company/jobs/">Careers</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.mathworks.com/company/newsletters/">Newsletters</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.mathworks.com/company/rss">RSS</a></td>
+		</tr>
+</tbody></table>
+<table id="footer" width="752" border="0">
+		<tbody><tr>
+			<td class="small">Problems? Suggestions? Contact us at <a href="mailto:files@mathworks.com">files@mathworks.com</a> </td>
+				<td class="small" align="right"> ©  1994-2008 The MathWorks, Inc.    <a href="http://www.mathworks.com/company/aboutus/policies_statements/trademarks.html">Trademarks</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.mathworks.com/company/aboutus/policies_statements/">Privacy Policy</a></td>
+		</tr>
+</tbody></table>
+
+<!-- Begin The MathWorks Omniture SiteCatalyst code version: H.4. --> <script language="JavaScript" type="text/javascript" src="loadFile.do_files/s_code.js"></script><img name="s_i_mathmain" alt="" width="1" border="0" height="1">
+<script language="JavaScript" type="text/javascript"><!-- s.pageName=""
+s.server=""
+s.channel=""
+s.pageType=""
+s.prop1=""
+s.prop2=""
+s.prop3=""
+s.prop4=""
+s.prop5=""
+s.prop6=""
+s.prop7=""
+s.prop8=""
+s.prop9=""
+s.prop10=""
+s.campaign=""
+s.state=""
+s.zip=""
+s.events=""
+s.products=""
+s.purchaseID=""
+s.eVar1=""
+s.eVar2=""
+s.eVar3=""
+s.eVar4=""
+s.eVar5=""
+/************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/ var s_code=s.t();if(s_code)document.write(s_code)//--></script><img src="loadFile.do_files/s65302541014456.gif" name="s_i_mathglobal" alt="" width="1" border="0" height="1">
+
+<script language="JavaScript" type="text/javascript"><!--
+if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')
+//--></script><!--/DO NOT REMOVE/-->
+<!-- End The MathWorks Omniture SiteCatalyst code version: H.4. -->
+
+
+</body></html>
