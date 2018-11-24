@@ -8,7 +8,7 @@ function FC=afc(S,K)
 
 %S是种子图像(作为布尔值处理)
 
-%K为大小为numel(S)*numel(S)的对称矩阵
+%K为大小为numel(S)*numel(S)的对称矩阵-
 %Author: Joakim Lindblad
 
 % Dijkstra version

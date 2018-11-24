@@ -18,6 +18,9 @@ dR=abs(repmat([1:r],r,1)-repmat([1:r].',1,r));
 %A为N*N的稀疏矩阵所有元素为0
 A=sparse(N,N); %output matrix
 
+
+
+
 for dc=0:n %for each L1 distance level
 	[bi,bj]=find(dC == dc); %r*r blocks with dc<=n
 	for dr=0:n-dc
