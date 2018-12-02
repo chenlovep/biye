@@ -16,19 +16,22 @@ n=1;
 k1=0.1;
 %A表示图像中任意两点的邻接度Uα(c,d)
 %A(r*c,r*c)
+%图像中只有当前点和其4邻域的像素点具有邻接度，其余为0
 A=adjacency(I,n,k1);
 
 %Compute affinity
 %计算亲和度
 k2=2;
 K=affinity(I,A,k2);
-
+disp(K);
 
 %Seed points, numbered from 1 and up
 S=zeros(size(I));
-[x,y]=ginput(2);%获取两个种子点，其余非种子点为0
-S(ceil(x*128),ceil(y*128))=1;%进行设置种子点处理
-disp(x*128);disp(y*128);
+%[x,y]=ginput(1);%获取两个种子点，其余非种子点为0
+%S(ceil(x*128),ceil(y*128))=1;%进行设置种子点处理
+S(60,60)=1;
+S(65,60)=1;
+%disp(x*128);disp(y*128);
 %S(75:80,25:30)=1; %coat
 %S(60:65,40:45)=1; %hand
 %S(110:115,20:25)=1; %leg
