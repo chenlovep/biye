@@ -5,9 +5,12 @@ close all;
 %[filename,path] = uigetfile({'*.tif;*.bmp;*.jpg;*.png'});
 %path = fullfile(path,filename);
 %img=imread(path);
-%img=rgb2gray(img);
+    %img=rgb2gray(img);
 img=imread('27.jpg');
-%img=add_noise(img);
+img=add_noise(img);
+figure;
+imshow(img);
+imwrite(img, 'ÔëÉù20%µÄÍ¼Ïñ.jpg');
 tic;
 [r,c]=size(img);
 width=7; %¾Ö²¿´°³ß´ç
@@ -85,6 +88,7 @@ end
 
 A=uint8(A);
 imshow(A)
+imwrite(A,'·Ö¸îºóÍ¼Ïñ.jpg');
 SA=zhengquelv(A);
 disp(SA);
 toc;

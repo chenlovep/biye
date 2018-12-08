@@ -5,8 +5,8 @@ close all;
 %[filename,path] = uigetfile({'*.tif;*.bmp;*.jpg;*.png'});
 %path = fullfile(path,filename);
 img=imread('27.jpg');
-img=add_noise(img);
-%img=imread(path);
+%img=add_noise(img);
+%img=imread(img);
 
 %img=rgb2gray(img);
 
@@ -62,7 +62,7 @@ end
 figure(1);
 imshow(uint8(img));
 figure(2);
-disp(size(img_seg))
+disp(img_seg)
 imagesc(label2rgb(img_seg,'jet','w','shuffle'));
 axis image
 axis off;
@@ -72,11 +72,11 @@ A=zeros(r,c);
 for i =1:r
     for j=1:c
         if img_seg(i,j)==1
-            A(i,j)=0;
-        elseif img_seg(i,j)==2
             A(i,j)=250;
+        elseif img_seg(i,j)==2
+            A(i,j)=80;
         elseif img_seg(i,j)==3
-            A(i,j)=0;
+            A(i,j)=160;
         else
             A(i,j)=0;
         end
@@ -86,6 +86,7 @@ end
 A=uint8(A);
 figure(3);
 imshow(A)
+imwrite(A,'·Ö¸îÍ¼Ïñ.jpg')
 SA=zhengquelv(A);
 disp(SA);
 toc;

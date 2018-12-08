@@ -5,7 +5,7 @@ close all;
 %[filename,path] = uigetfile({'*.tif;*.bmp;*.jpg;*.png'});
 %path = fullfile(path,filename);
 img=imread('27.jpg');
-img=add_noise(img);%添加程度不同的噪声
+%img=add_noise(img);%添加程度不同的噪声
 %img=imread(path);
 %img=rgb2gray(img);
 tic;
@@ -82,6 +82,7 @@ end
 
 A=uint8(A);
 imshow(uint8(A))
+imwrite(A,'分割后图像.jpg');
 SA=zhengquelv(A);
 disp(SA);
 toc;

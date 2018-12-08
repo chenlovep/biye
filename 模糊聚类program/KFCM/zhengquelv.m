@@ -1,5 +1,5 @@
 function [SA]=zhengquelv(B)
-A=imread('E:\PROJECT code\biye\pred\4_json\label.png');%label标准图像
+A=imread('label.png');%label标准图像
 
 
 
