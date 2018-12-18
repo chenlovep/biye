@@ -51,9 +51,9 @@ for i =1:max_iter
     
     %在每一个循环中改变聚类中心ceneter和分配函数U的隶属度值
     [U,center,obj_fcn(i)] = stepfcm(data,U,cluster_n,expo);
-    if display,
-        fprintf('FCM:Iteration count=%d,obj.fcn=%f\n',i,obj_fcn(i));
-    end
+    %if display,
+    %    fprintf('FCM:Iteration count=%d,obj.fcn=%f\n',i,obj_fcn(i));
+    %end
     
     %终止条件判别
     if i>1,
