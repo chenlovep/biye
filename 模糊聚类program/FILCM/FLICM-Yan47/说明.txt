@@ -1,0 +1,3 @@
+运行test-FLICM,恩就是这样！！！
+本程序是对 A robust fuzzy local information C-means clustering algorithm 的Matlab实现！
+基于Krinidis Stelios提供的c与Matlab的混合编程代码实现，并且更改了其中一些与原文不符的公式。

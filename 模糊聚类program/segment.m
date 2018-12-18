@@ -4,9 +4,11 @@
 tmp=imread('27.jpg');
 %添加噪声
 figure(1);
+title('原图像')
 imshow(tmp);
-tmp=add_noise(tmp);
+%tmp=add_noise(tmp);
 figure(2);
+title('添加噪声后图像');
 imshow(tmp);
 
 tmp=tmp(:,:,1);
@@ -17,6 +19,7 @@ IM=double(tmp);
 IM=IM(20:99,10:109);%控制图片的输入范围
 
 figure(3);
+title('图片删减');
 imshow(uint8(IM));%对原始输入图片进行输出
 tic;
 [r,c]=size(IM);
@@ -72,7 +75,7 @@ for i=1:r
         elseif img_seg(i,j)==2
             IMMM(i,j)=80;
         elseif img_seg(i,j)==3
-            IMMM(i,j)=80;
+            IMMM(i,j)=160;
         else
             IMMM(i,j)=250;
         end
@@ -80,6 +83,7 @@ for i=1:r
 end
 
 figure(4);
+title('FCM图像');
 imshow(uint8(IMMM));
 
 
@@ -121,6 +125,7 @@ while(1)
 end
 IMMRF=uint8(IMMRF);
 figure(5);
+title('MRF图像');
 imshow(IMMRF);
 CStruInfo=zeros(cluster_n,r*c);
 
@@ -136,6 +141,34 @@ for i=1:maxX
     end
 end
 [N_maxX,N_maxY]=size(IM2);
+
+chuan = 3;
+mrf_fcm = zeros(r,c);
+m_aver = zeros(r-chuan+1,c-chuan+1);
+m_fangcha = zeros(r-chuan+1,c-chuan+1);
+for i = ceil(chuan/2):r - ceil(chuan/2)
+    for j = ceil(chuan/2):c - ceil(chuan/2)
+        m_aver(i-ceil(chuan/2)+1,j-ceil(chuan/2)+1) = mean(mean(IMMM(i-floor(chuan/2):i+floor(chuan/2),j-floor(chuan/2):j+floor(chuan/2))));
+        m_fangcha(i-ceil(chuan/2)+1,j-ceil(chuan/2)+1) = std2(IMMM(i-floor(chuan/2):i+floor(chuan/2),j-floor(chuan/2):j+floor(chuan/2)));
+        if abs(IMMM(i,j)-m_aver(i-ceil(chuan/2)+1, j-ceil(chuan/2)+1)) < m_fangcha(i-ceil(chuan/2)+1, j-ceil(chuan/2)+1)
+            mrf_fcm(i,j) = 1;
+        else
+            mrf_fcm(i,j) = 0;
+        end
+    end
+end
+
+
+end_picture1=mrf_fcm.*im2double(IMMM);
+end_picture2=(1-mrf_fcm).*im2double(IMMRF);
+end_picture=(end_picture1+end_picture2);
+end_picture=end_picture./max(max(end_picture));
+Picture=uint8(end_picture*255);
+figure(6);
+title('最后图片');
+imshow(Picture);
+imwrite(Picture, 'mrf_fcm.jpg');
+%{
 LOF=zeros(maxX,maxY);
 COUNT=0;
 for i=1:maxX
@@ -201,5 +234,5 @@ SA=zhengquelv(Picture);
 disp(SA);
 toc;
 %color_picture=color(IMMM);
-
+%}
 
