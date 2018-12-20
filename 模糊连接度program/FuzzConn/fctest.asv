@@ -11,7 +11,7 @@ I = double(imread('27.jpg'))./255;
 disp(sprintf('Image size: %d x %d',size(I,1),size(I, 2)));
 [r,c]=size(I);
 
-[I_g] = processing(I);
+[I_g] = processing(I_g);
 %Compute adjacency
 %计算邻接Uα(c,d)
 n=1;
@@ -34,7 +34,7 @@ K=affinity(I_g, A, k2);
 %S(60,60)=1;
 %S(65,60)=1;
 disp(size(I));
-k=3;%种子点选取的个数
+k=1;%种子点选取的个数
 [S] = shengzhan(I_g, k);
 disp(size(S));
 %disp(x*128);disp(y*128);
@@ -79,5 +79,5 @@ disp(thresh);
 figure(3)
 image(I_rgb)
 imoverlay(FC,FC>thresh);
-title(sprintf('Fuzzy connected component at level %.4f',thresh));
+title(sprintf('Fuzzy connected component at level %.2f',thresh));
 
