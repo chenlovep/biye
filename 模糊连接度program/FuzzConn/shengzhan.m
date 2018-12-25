@@ -35,6 +35,8 @@ neigb = [ -1 0;
     x = round(Y);
     y = round(X);
     reg_mean = I(x, y);%表示分割好的区域内的平均值，初始化为种子点的灰度值
+    reg_var = I(x,y);
+    disp([x,y]);
     reg_size = 1;%分割的到的区域，初始化只有种子点一个
     neg_free = 10000; %动态分配内存的时候每次申请的连续空间大小
     neg_list = zeros(neg_free,3);
@@ -42,22 +44,20 @@ neigb = [ -1 0;
     %如果图像比较大，需要结合neg_free来实现matlab内存的动态分配
     neg_pos = 0;%用于记录neg_list中的待分析的像素点的个数
     pixdist = 0;
-    
-    while (pixdist < 0.06 && reg_size < numel(I))
+    f = 10;
+    while and(pixdist < 0.06, reg_size<numel(I))
         for j=1:4
              xn = x + neigb(j,1);
-             yn = y + neigb(j,2);
-          
+             yn = y + neigb(j,2);    
              %检查邻域像素是否超过了图像的边界
              ins = (xn>=1)&&(yn>=1)&&(xn<=Isizes(1))&&(yn<=Isizes(1));
              %如果邻域像素在图像内部，并且尚未分割好；那么将它添加到邻域列表中
-             if( ins && J(xn,yn)==0)
+             if( ins && J(xn,yn)==0) 
                  neg_pos = neg_pos+1;
                  neg_list(neg_pos,:) = [ xn, yn, I(xn,yn)];%存储对应点的灰度值
                  J(xn,yn) = 1;%标注该邻域像素点已经被访问过 并不意味着，他在分割区域内
              end
-        end
-        
+        end 
         if or(~find(neg_list ~= 0), neg_pos == 0)
             break
         end
@@ -68,7 +68,7 @@ neigb = [ -1 0;
             neg_list((neg_pos +1):neg_free,:) = 0;
         end
         
-        %{
+        
         %区域生长的方法
         %从所有待分析的像素点中选择一个像素点，该点的灰度值和已经分割好区域灰度均值的
         %差的绝对值时所待分析像素中最小的
@@ -82,23 +82,27 @@ neigb = [ -1 0;
         J(x, y)=2;%标志该像素点已经是分割好的像素点
         x = neg_list(index,1);
         y = neg_list(index,2);
-        if neg_pos == 0
-            break 
-        end
+        
         %将新的种子点从待分析的邻域像素列表中移除
         neg_list(index,:) = neg_list(neg_pos,:);
         neg_pos = neg_pos -1;
-        %}
-        %更新后的区域生长,（使用拟合直线方法进行处理,将离该直线距离最近的点储存进种子点)
         
+        
+
+        %{
+        %更新后的区域生长,（使用拟合直线方法进行处理,将离该直线距离最近的点储存进种子点)
         %neg_list为储存邻域列表
         %neg_pos邻域列表内的个数
         %reg_size种子点个数
-        [a, b] = nihe([1:1:length(neg_list(1:neg_pos,3))], neg_list(1:neg_pos, 3));
-        dist = abs(neg_list(1:neg_pos, 3)'- a*[1:1:length(neg_list(1:neg_pos, 3))] -b);
+        %[a, b] = nihe([1:1:length(neg_list(1:neg_pos,3))], neg_list(1:neg_pos, 3));%拟合直线
+        %dist = abs(neg_list(1:neg_pos, 3)'- a*[1:1:length(neg_list(1:neg_pos, 3))] -b);
+
+        [a, b, c] = nihe([1:1:length(neg_list(1:neg_pos,3))], neg_list(1:neg_pos, 3));
+        dist = abs(neg_list(1:neg_pos,3) - (4*a*c-b^2)/(4*a));
+        disp(fprintf('dist:',dist));
         %dist = abs(neg_list(1:neg_pos,3)-reg_mean);
         [pixdist,index] = min(dist);
-      
+        disp(fprintf('pixdist:',pixdist));
         %计算区域的新的均值
         reg_mean = (reg_mean * reg_size +neg_list(index,3))/(reg_size + 1);
         reg_size = reg_size + 1;
@@ -112,6 +116,52 @@ neigb = [ -1 0;
         %将新的种子点从待分析的邻域像素列表中移除
         neg_list(index,:) = neg_list(neg_pos,:);
         neg_pos = neg_pos -1;
+        
+
+
+        
+        %更新后的区域生长
+        %neg_list为储存邻域列表
+        %neg_pos邻域列表内的个数
+        %reg_size种子点个数
+        %[a, b] = nihe([1:1:length(neg_list(1:neg_pos,3))], neg_list(1:neg_pos, 3));
+        %dist = abs(neg_list(1:neg_pos, 3)'- a*[1:1:length(neg_list(1:neg_pos, 3))] -b);
+        reg_mean = mean(neg_list(1:neg_pos, 3)); 
+        reg_var = var(neg_list(1:neg_pos, 3));
+       
+        disp(fprintf('置信连接度%.5f <====> %.5f',reg_mean - f*reg_var, reg_mean + f*reg_var));
+        
+        [dist] = find(and(neg_list(1:neg_pos, 3) > reg_mean - f*reg_var, neg_list(1:neg_pos, 3)< reg_mean + f*reg_var));      
+        %dist_min = abs(neg_list(dist);
+        [pixdist,index] = min(dist);
+        disp(fprintf('pixdist:',pixdist));
+        %计算区域的新的均值
+        %reg_mean = (reg_mean * reg_size +neg_list(index,3))/(reg_size + 1);
+        %reg_var = sqrt();
+        reg_size = reg_size + 1;
+        %将旧的种子点标记为已经分割好的区域像素点
+        J(x, y)=2;%标志该像素点已经是分割好的像素点
+        %[J_x, J_y] = find(J == 2);
+        %reg_mean = mean(mean(I(J_x, J_y)));
+        %reg_var = std2((I(J_x, J_y)));
+        x = neg_list(index,1);
+        y = neg_list(index,2);
+        if or(neg_pos == 0, index == 0)
+            break 
+        end
+        disp(size(index))
+        if size(index) == [0, 0] 
+            neg_list(index) = neg_list(neg_pos);
+        else
+            %将新的种子点从待分析的邻域像素列表中移除
+            neg_list(index,:) = neg_list(neg_pos,:);
+        end
+        neg_pos = neg_pos -1;
+        disp(neg_pos);
+        if neg_pos == 0
+            break
+        end
+        %}
     end
 
  end

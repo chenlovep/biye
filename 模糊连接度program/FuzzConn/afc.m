@@ -34,9 +34,9 @@ while ~isempty(Q)
     
     %找出集合fc中像素重叠邻域点的最优路径
 	idx=find(f>FC(:)); %find those with real change
-    disp(length(idx));
+    %disp(length(idx));
     c=c+length(idx);
     FC(idx)=f(idx); %update FC
 	Q=[Q;idx]; %push all updated spels
 end
-disp(c);
+%disp(c);

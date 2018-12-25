@@ -18,7 +18,7 @@ end
 if nargin<5
 	map=jet(64);
 end
-disp(size(map));
+
 %将图像I进行归一化处理
 if max(I(:))>1
 	I=I./max(I(:));
@@ -32,4 +32,6 @@ if ~isempty(mask)
 else
 	set(h,'AlphaData',alpha);
 end
+
+
 hold off

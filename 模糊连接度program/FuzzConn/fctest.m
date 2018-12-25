@@ -2,16 +2,37 @@
 % Fuzzy connectedness segmentation example
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear all;
+close all;
 clc;
 %Read image and scale to [0,1]
-I = double(imread('27.jpg'))./255;
+I = double(imread('30.jpg'));
+figure;
+title('原图');
+imshow(I);
+[kseedsx, kseedsy] = SLIC(I);
+disp(kseedsx);
+disp(kseedsy);
+%M为种子点数量
+M = 1;point_seed_x=[];point_seed_y = [];I_kseed=[];
+for i =1:length(kseedsx)
+    I_kseed = [I_kseed I(floor(kseedsx(i)), floor(kseedsy(i)))];
+end
+disp(I_kseed);
+for i=1:M
+    point = find(max(I_kseed));
+    point_seed_x = [point_seed_x floor(kseedsx(point))];
+    point_seed_y = [point_seed_y floor(kseedsy(point))];
+    I_kseed(point) = [];
+end
+disp(point_seed_x);
+disp(point_seed_y);
+%超像素分割确定区域生长的初始种子点
+Super_peiels(I);
 
-%We subsample by factor of 2 to make  things run a bit faster when playing around
-%I=I(1:2:end,1:2:end,:);
-disp(sprintf('Image size: %d x %d',size(I,1),size(I, 2)));
+%{
 [r,c]=size(I);
-
 [I_g] = processing(I);
+I_g = (I_g +I)/2;
 %Compute adjacency
 %计算邻接Uα(c,d)
 n=1;
@@ -19,7 +40,7 @@ k1=0.1;
 %A表示图像中任意两点的邻接度Uα(c,d)
 %A(r*c,r*c)
 %图像中只有当前点和其4邻域的像素点具有邻接度，其余为0
-A = adjacency(I_g, n, k1);
+A=adjacency(I_g, n, k1);
 
 %Compute affinity
 %计算亲和度
@@ -28,15 +49,8 @@ K=affinity(I_g, A, k2);
 
 
 %Seed points, numbered from 1 and up
-%S=zeros(size(I));
-%[x,y]=ginput(1);%获取两个种子点，其余非种子点为0
-%S(ceil(x*128),ceil(y*128))=1;%进行设置种子点处理
-%S(60,60)=1;
-%S(65,60)=1;
-disp(size(I));
-k=3;%种子点选取的个数
+k=6;%种子点选取的个数
 [S] = shengzhan(I_g, k);
-disp(size(S));
 %disp(x*128);disp(y*128);
 %S(75:80,25:30)=1; %coat
 %S(60:65,40:45)=1; %hand
@@ -44,7 +58,6 @@ disp(size(S));
 
 %S(10:15,80:85)=2; %sky
 %S(100:105,110:125)=3; %grass
-
 
 %Show seeds overlayed on image
 I_rgb=repmat(I,[1,1,3]); %make rgb image (required by imoverlay)
@@ -72,12 +85,13 @@ title('Fuzzy connectedness map');
 
 %Threshold value
 %thresh=0.79;
+
 [thresh] = mohuzhi(FC);
-disp(fprintf('阈值结果为:%.5d',thresh));
 disp(thresh);
 %Show the 0.75-connected component overlayed on original image
 figure(3)
-image(I_rgb)
-imoverlay(FC,FC>thresh);
-title(sprintf('Fuzzy connected component at level %.4f',thresh));
+image(I_rgb);
 
+imoverlay(FC,FC>0);
+title(sprintf('Fuzzy connected component at level %.2f',thresh));
+%}
