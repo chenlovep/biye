@@ -2,11 +2,34 @@
 % Fuzzy connectedness segmentation example
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear all;
+close all;
 clc;
 %Read image and scale to [0,1]
-I = double(imread('30.jpg'))./255;
+I = double(imread('30.jpg'));
+figure;
+title('原图');
+imshow(I);
+[kseedsx, kseedsy] = SLIC(I);
+disp(kseedsx);
+disp(kseedsy);
+%M为种子点数量
+M = 1;point_seed_x=[];point_seed_y = [];I_kseed=[];
+for i =1:length(kseedsx)
+    I_kseed = [I_kseed I(floor(kseedsx(i)), floor(kseedsy(i)))];
+end
+disp(I_kseed);
+for i=1:M
+    point = find(max(I_kseed));
+    point_seed_x = [point_seed_x floor(kseedsx(point))];
+    point_seed_y = [point_seed_y floor(kseedsy(point))];
+    I_kseed(point) = [];
+end
+disp(point_seed_x);
+disp(point_seed_y);
+%超像素分割确定区域生长的初始种子点
+Super_peiels(I);
 
-                         
+%{
 [r,c]=size(I);
 [I_g] = processing(I);
 I_g = (I_g +I)/2;
@@ -71,4 +94,4 @@ image(I_rgb);
 
 imoverlay(FC,FC>0);
 title(sprintf('Fuzzy connected component at level %.2f',thresh));
-
+%}
