@@ -1,15 +1,17 @@
-function [kseedsx, kseedsy] = SLIC(img)
+function [k_label_x, k_label_y] = SLIC(img)
 %img = imread('27.jpg');
 sigma = 1;%±ê×¼²î´óĞ¡
 window = double(uint8(3*sigma)*2+1);
 H = fspecial('gaussian', window, sigma);%ÂË²¨²ÎÊı
 img = imfilter(img, H, 'replicate');
+%{
 figure;
 title('¸ßË¹ÂË²¨Í¼Ïñ');
 imshow(img);
 hold on;
+%}
 [r, c, channel] = size(img);
-disp(channel);
+%disp(channel);
 %»Ò¶ÈÍ¼ÏñµÄ´¦Àí·½Ê½
 if channel == 1
     for i=1:r
@@ -23,9 +25,9 @@ if channel == 1
 end
 
 img_size = size(img);   %Èı¸öÔªËØ£ºÍ¼ÏñµÄ¸ß¡¢Í¼ÏñµÄ¿í¡¢Í¼ÏñµÄÍ¨µÀÊı
-disp(img_size);
+%disp(img_size);
 %Éè¶¨³¬ÏñËØ¸öÊı
-K = 20;
+K = 50;
 %Éè¶¨³¬ÏñËØ½ô´ÕÏµÊı
 m_compactness = 20;
 
@@ -57,6 +59,7 @@ ystrips_adderr = double(img_size(1))/double(ystrips);%Ã¿Ò»¸ö¾ÛÀàÖĞĞÄµÄy·½ÏòÒÆ¶¯¾
 disp(fprintf('ystrips_adderr:%f', ystrips_adderr));
 numseeds = xstrips*ystrips;   %numseedsÖÖ×ÓµãµÄ¸öÊı
 disp(fprintf('ÖÖ×Óµã¸öÊı:%d', numseeds));
+
 %ÖÖ×ÓµãxyĞÅÏ¢³õÊ¼ÖµÎª¾§¸ñÖĞĞÄÑÇÏñËØ×ø±ê
 %ÖÖ×ÓµãLabÑÕÉ«ĞÅÏ¢Îª¶ÔÓ¦µã×î½Ó½üÏñËØµãµÄÑÕÉ«Í¨µÀÖµ
 kseedsx = zeros(numseeds, 1);
@@ -82,23 +85,40 @@ n = 1;
 %klabelsÃ¿¸öÔªËØµÄ±êÇ©
 [klabels, kseedsx, kseedsy] = PerformSuperpixelSLIC(img_Lab, kseedsl, kseedsa, kseedsb, kseedsx, kseedsy, STEP, m_compactness);
 
-plot(kseedsx, kseedsy,'*r');
-hold off;
+
 %
 img_Contours = DrawContoursAroundSegments(img, klabels);
 
 %ºÏ²¢Ğ¡µÄ·ÖÇø
 nlabels = EnforceLabelConnectivity(img_Lab, klabels, K); 
 
+
+
+%»ñÈ¡×îĞÂ¾ÛÀàÖĞĞÄ
+M = max(max(nlabels));
+k_label_x = zeros(1, M);
+k_label_y = zeros(1, M);
+k_label_num = zeros(1, M);
+for i=1:r
+    for j=1:c
+        k_label_x(nlabels(i, j)) = k_label_x(nlabels(i, j)) + i;
+        k_label_y(nlabels(i, j)) = k_label_y(nlabels(i, j)) + j;
+        k_label_num(nlabels(i ,j)) = k_label_num(nlabels(i, j)) + 1;
+    end
+end
+for i=1:M
+    k_label_x(i) = k_label_x(i)/k_label_num(i);
+    k_label_y(i) = k_label_y(i)/k_label_num(i);
+end
+plot(k_label_x, k_label_y, '*r');
+hold off;
+
 %¸ù¾İµÃµ½µÄ·ÖÇø±êÇ©ÕÒµ½±ß½ç
 img_ContoursEX = DrawContoursAroundSegments_EX(img, nlabels);
-figure;
+figure(2);
+
 imshow(img_ContoursEX);
-
-
-
-
-
+title('³¬ÏñËØ·Ö¸î');
 
 
 
