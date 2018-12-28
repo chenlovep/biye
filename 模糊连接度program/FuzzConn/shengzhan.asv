@@ -24,6 +24,7 @@ I_canny = edge(I, 'canny');
 %if( exist('x','var') == 0 && exist('y','var') == 0)
 %    subplot(2,2,1),imshow(I,[]);
 %    hold on;
+figure();
 subplot(2,2,1), imshow(I,[]);
 
 
@@ -69,7 +70,7 @@ neigb = [ -1 0;
     pixdist = 0;
     f = 10;
     %while and(neg_list(1) ~= [0 0 0], reg_size<numel(I))
-    while and(pixdist < 0.4, reg_size<numel(I))
+    while and(pixdist < 0.2, reg_size<numel(I))
         %将种子的4邻域进行扩散
         for j=1:4
              xn = x + neigb(j,1);

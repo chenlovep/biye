@@ -37,14 +37,16 @@ for i=1:r
 end
 cluster_n=4;
 [center,u,obj_fcn]=FCM(data,cluster_n);
-
+disp(center);
+disp(size(u));
+disp(size(obj_fcn));
 %来对输出的类别进行准确分类，否则会出现每次分类结果像素不确定现象
 [CENTER,index_center]=sort(center);
 U=zeros(size(u));
 for i=1:cluster_n
     U(i,:)=u(index_center(i),:);
 end
-
+%{
 
 %计算分割系数Vpc
 Vpc=0;
@@ -235,4 +237,4 @@ disp(SA);
 toc;
 %color_picture=color(IMMM);
 %}
-
+%}

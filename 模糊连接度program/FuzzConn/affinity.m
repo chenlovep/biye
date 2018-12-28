@@ -7,4 +7,5 @@ function K=affinity(I,A,k2)
 %Author: Joakim Lindblad
 
 [i,j,a]=find(A); %get adjacencies
+
 K=sparse(i,j,a./(1+k2.*abs(I(i)-I(j))),size(A,1),size(A,2));
