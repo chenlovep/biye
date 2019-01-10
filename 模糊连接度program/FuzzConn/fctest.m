@@ -9,7 +9,12 @@ clc;
 I_ = imread('33.jpg');
 I = double(I_)./255;
 %原图像进行形态学处理（对比度拉伸）
-[I_g] = processing(I_, 6);
+[I_g] = processing(I_);
+
+
+
+
+%{
 I_g_ = double(I_g)./255;
 %将形态学处理后的图像与原图像多尺度结合
 %I_g = (I_g + I_)/2;
@@ -40,6 +45,11 @@ imshow(I);
 hold on;
 plot(point_seed_x, point_seed_y,'or');
 hold off;
+%}
+
+
+
+
 %超像素分割确定区域生长的初始种子点
 %Super_peiels(I);
 
@@ -49,6 +59,9 @@ hold off;
 %[I_g] = processing(I);
 %将形态学处理后的图像与原图像多尺度结合
 %I = (I_g +I)/2;
+
+
+%{
 [r,c]=size(I_g);
 
 %Compute adjacency
@@ -67,6 +80,10 @@ disp(size(A));
 k2=2;
 K=affinity(I, A, k2);       %形态学图片
 K_ = affinity(I, A_, k2);    %原图像
+%}
+
+
+
 %{
 S=zeros(r,c);
 for i=1:length(point_seed_x)
@@ -81,10 +98,12 @@ k=3;%种子点选取的个数
 
 %S=zeros(r,c);
 %S(point_seed_x, point_seed_y) = 1;
+%{
 figure(4);
 [SS, x_, y_] = shengzhan(I_g, k);          %对形态学
 figure(5);
 [S_, x_, y_] = shengzhan(I, 0, x_, y_);   %原图像
+%}
 %{
 s=zeros(r,c);
 n=0;m=0;
@@ -143,6 +162,10 @@ end
 %S(100:105,110:125)=3; %grass
 %}
 %Show seeds overlayed on image
+
+
+
+%{
 I_rgb=repmat(I_g_,[1,1,3]); %make rgb image (required by imoverlay)
 figure(6)
 image(I_rgb)
@@ -173,3 +196,4 @@ figure(8)
 image(I_rgb);
 imoverlay(FC,FC>0);
 title(sprintf('Fuzzy connected component at level %.2f',thresh));
+%}
