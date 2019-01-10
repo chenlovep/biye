@@ -1,7 +1,9 @@
-function [g] = processing(img,moshi)
+function [img] = processing(IMG)
 
+%对图像进行预处理
+%方法1：采用形态学处理，原图像+（原图像-开运算）+（闭运算+原图像）
+%{
 se = strel('disk', 3);
-
 [r,c] = size(img);
 G = zeros(r,c);
 for i = 1:r
@@ -41,3 +43,91 @@ end
 
 %subplot(1,2,1),imshow(img),title('原图');
 %subplot(1,2,2),imshow(img_close), title('腐蚀图像');
+%}
+
+%方法2：直方图和边缘细节处理（可带创新）
+[r,c] = size(IMG);
+max_index = max(max(IMG));
+min_index = min(min(IMG));
+index_hist = zeros(1,256);
+for i=1:r
+    for j=1:c
+        index_hist(1,IMG(i,j)+1) = index_hist(1,IMG(i,j)+1) + 1;
+    end
+end
+%
+index_hist_p = double(index_hist./(r*c));
+disp(index_hist_p);
+%直方图均衡变换函数
+%统计图像中每个灰度级像素的累积个数
+for i = 1:256
+    S(i) = sum(index_hist_p(1,1:i)); 
+end
+
+for i=1:256
+    S(i) = S(i)*255;%灰度映射函数
+    if S(i)>255
+        S(i) = 2565; 
+    end
+end
+
+%图像均衡化
+I_equal = IMG;
+for i=1:r
+    for j=1:c
+        I_equal(i,j) = S(IMG(i,j)+1);
+    end
+end
+disp(S);
+
+
+g=histeq(IMG);
+
+
+img = double(IMG);
+%g_sobel用sobel算子进行边缘检测
+g_sobel=edge(img,'canny',0.09);
+figure;
+imshow(g_sobel);
+title('自带SOBEL边缘检测');
+
+%自适应系数
+%窗口大小
+w = 5;
+%某一指定系数
+k_ = 10;
+%图像方差
+sita_img = std2(img)^2;
+%自适应系数
+k=zeros(r,c);
+for i=ceil(w/2):r-floor(w/2)
+    for j = ceil(w/2):c-floor(w/2)
+        %当前像素点的窗口邻域范围
+        img_window = img(i-floor(w/2):i+floor(w/2),j-floor(w/2):j+floor(w/2));
+        %窗口图像的方差
+        sita_win = std2(img_window)^2;
+        k(i,j) = k_*(sita_win/sita_img)-k_;
+    end
+end
+
+g_adap_hist = zeros(r,c);
+for i=1:r
+    for j=1:c
+        disp(k(i,j));
+        disp(g_sobel(i,j));
+        g_adap_hist(i,j) = g(i,j) + k(i,j)*g_sobel(i,j);
+    end
+end
+
+subplot(141);
+imshow(IMG);
+title('原图');
+subplot(142);
+imshow(g);
+title('直方图均衡化处理图像');
+subplot(143);
+imshow(g_sobel);
+title('sobel边缘检测');
+subplot(144);
+imshow(uint8(g_adap_hist));
+title('图像增强');

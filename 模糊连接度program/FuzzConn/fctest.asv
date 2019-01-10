@@ -25,7 +25,7 @@ disp(kseedsy);
 M = 1;point_seed_x=[];point_seed_y = [];I_kseed=[];
 for i =1:length(kseedsx)
     I_kseed = [I_kseed I_(floor(kseedsx(i)), floor(kseedsy(i)))];
-end
+end............
 disp(I_kseed);
 for i=1:M
     point = find(I_kseed == max(I_kseed));
