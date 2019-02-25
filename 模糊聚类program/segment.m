@@ -6,7 +6,7 @@ tmp=imread('27.jpg');
 figure(1);
 title('原图像')
 imshow(tmp);
-%tmp=add_noise(tmp);
+tmp=add_noise(tmp);
 figure(2);
 title('添加噪声后图像');
 imshow(tmp);
@@ -65,6 +65,7 @@ disp('-----------分割系数Vpc-------------');
 disp(Vpc);
 disp('-----------分割熵Vpe---------------');
 disp(Vpe);
+%}
 img_seg=IM*0;
 
 for i=1:r
@@ -129,6 +130,7 @@ IMMRF=uint8(IMMRF);
 figure(5);
 title('MRF图像');
 imshow(IMMRF);
+imwrite(IMMRF,'图像.jpg')
 CStruInfo=zeros(cluster_n,r*c);
 
 
@@ -143,7 +145,7 @@ for i=1:maxX
     end
 end
 [N_maxX,N_maxY]=size(IM2);
-
+%{
 chuan = 3;
 mrf_fcm = zeros(r,c);
 m_aver = zeros(r-chuan+1,c-chuan+1);
@@ -170,7 +172,7 @@ figure(6);
 title('最后图片');
 imshow(Picture);
 imwrite(Picture, 'mrf_fcm.jpg');
-%{
+%}
 LOF=zeros(maxX,maxY);
 COUNT=0;
 for i=1:maxX
@@ -189,8 +191,8 @@ end_picture=end_picture./max(max(end_picture));
 Picture=uint8(end_picture*255);
 figure(6);
 imshow(Picture);
-
-
+title('图像');
+%{
 %计算整个算法的Vpc和Vpe
 STR=zeros(size(U));
 for i=1:r
@@ -236,5 +238,6 @@ SA=zhengquelv(Picture);
 disp(SA);
 toc;
 %color_picture=color(IMMM);
+%}
 %}
 %}

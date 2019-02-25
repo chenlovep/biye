@@ -6,40 +6,47 @@ clear all;
 close all;
 clc;
 %Read image and scale to [0,1]
-I_ = imread('33.jpg');
+I_ = imread('44.jpg');
+
 I = double(I_)./255;
+figure;
+imshow(I);
+title('原图');
 %原图像进行形态学处理（对比度拉伸）
 [I_g] = processing(I_, 6);
-I_g_ = double(I_g)./255;
+%I_g_ = double(I_g)./255;
 %将形态学处理后的图像与原图像多尺度结合
 %I_g = (I_g + I_)/2;
-figure(1);
+figure;
 imshow(I_g);
-title(sprintf('原图'));
+title('预处理图像');
 hold on;
-[kseedsx, kseedsy] = SLIC(I_);
-disp(kseedsx);
-disp(kseedsy);
-%M为种子点数量
-%point_seed_x,point_seed_y为自动选取的种子点
-M = 1;point_seed_x=[];point_seed_y = [];I_kseed=[];
-for i =1:length(kseedsx)
-    I_kseed = [I_kseed I_(floor(kseedsx(i)), floor(kseedsy(i)))];
-end
-disp(I_kseed);
-for i=1:M
-    point = find(I_kseed == max(I_kseed));
-    point_seed_x = [point_seed_x floor(kseedsx(point))];
-    point_seed_y = [point_seed_y floor(kseedsy(point))];
-    I_kseed(point) = [];
-    kseedsx(point) = [];kseedsy(point) = [];
-end
+%SLIC(I_);
 
-figure(3);
-imshow(I);
-hold on;
-plot(point_seed_x, point_seed_y,'or');
-hold off;
+
+
+% disp(kseedsx);
+% disp(kseedsy);
+% %M为种子点数量
+% %point_seed_x,point_seed_y为自动选取的种子点
+% M = 1;point_seed_x=[];point_seed_y = [];I_kseed=[];
+% for i =1:length(kseedsx)
+%     I_kseed = [I_kseed I_(floor(kseedsx(i)), floor(kseedsy(i)))];
+% end
+% disp(I_kseed);
+% for i=1:M
+%     point = find(I_kseed == max(I_kseed));
+%     point_seed_x = [point_seed_x floor(kseedsx(point))];
+%     point_seed_y = [point_seed_y floor(kseedsy(point))];
+%     I_kseed(point) = [];
+%     kseedsx(point) = [];kseedsy(point) = [];
+% end
+% 
+% figure(3);
+% imshow(I);
+% hold on;
+% plot(point_seed_x, point_seed_y,'or');
+% hold off;
 %超像素分割确定区域生长的初始种子点
 %Super_peiels(I);
 
@@ -49,6 +56,11 @@ hold off;
 %[I_g] = processing(I);
 %将形态学处理后的图像与原图像多尺度结合
 %I = (I_g +I)/2;
+
+
+
+
+
 [r,c]=size(I_g);
 
 %Compute adjacency
@@ -74,7 +86,7 @@ for i=1:length(point_seed_x)
 end
 %}
 %Seed points, numbered from 1 and up
-k=3;%种子点选取的个数
+k=6;%种子点选取的个数
 
 %k-means确认聚类中心
 
@@ -82,9 +94,13 @@ k=3;%种子点选取的个数
 %S=zeros(r,c);
 %S(point_seed_x, point_seed_y) = 1;
 figure(4);
+
 [SS, x_, y_] = shengzhan(I_g, k);          %对形态学
-figure(5);
-[S_, x_, y_] = shengzhan(I, 0, x_, y_);   %原图像
+kuagntu(SS);
+
+% figure(5);
+% [S_, x_, y_] = shengzhan(I, 0, x_, y_);   %原图像
+% kuagntu(S_);
 %{
 s=zeros(r,c);
 n=0;m=0;
@@ -143,7 +159,9 @@ end
 %S(100:105,110:125)=3; %grass
 %}
 %Show seeds overlayed on image
+%{
 I_rgb=repmat(I_g_,[1,1,3]); %make rgb image (required by imoverlay)
+disp(size(I_rgb));
 figure(6)
 image(I_rgb)
 imoverlay(SS,SS>0); %requires image in range [0,1]
@@ -173,3 +191,4 @@ figure(8)
 image(I_rgb);
 imoverlay(FC,FC>0);
 title(sprintf('Fuzzy connected component at level %.2f',thresh));
+%}

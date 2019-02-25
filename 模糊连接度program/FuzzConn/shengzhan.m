@@ -69,7 +69,7 @@ neigb = [ -1 0;
     pixdist = 0;
     f = 10;
     %while and(neg_list(1) ~= [0 0 0], reg_size<numel(I))
-    while and(pixdist < 0.4, reg_size<numel(I))
+    while and(pixdist < 0.25, reg_size<numel(I))
         %将种子的4邻域进行扩散
         for j=1:4
              xn = x + neigb(j,1);
@@ -97,11 +97,11 @@ neigb = [ -1 0;
             neg_list((neg_pos +1):neg_free,:) = 0;
         end
         
-        
+        %{
         %区域生长的方法
         %从所有待分析的像素点中选择一个像素点，该点的灰度值和已经分割好区域灰度均值的
         %差的绝对值时所待分析像素中最小的
-        %{
+        
         dist = abs(neg_list(1:neg_pos,3)-reg_mean);
         [pixdist,index] = min(dist);
       
@@ -161,8 +161,8 @@ neigb = [ -1 0;
         neg_pos = neg_pos -1;
         
 
-        %{
         
+        %{
         %更新后的区域生长
         %neg_list为储存邻域列表
         %neg_pos邻域列表内的个数
@@ -217,6 +217,7 @@ neigb = [ -1 0;
  subplot(2,2,3),imshow(J);
  subplot(2,2,4),imshow(I+J);
  title('对比图像结果');
+ imwrite(J, 'picture/19.jpg')
 %}
 %{
 %function [J] = shengzhan(I) 

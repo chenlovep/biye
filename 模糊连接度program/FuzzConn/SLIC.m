@@ -1,4 +1,4 @@
-function [k_label_x, k_label_y] = SLIC(img)
+function SLIC(img)
 %img = imread('27.jpg');
 sigma = 1;%标准差大小
 window = double(uint8(3*sigma)*2+1);
@@ -27,13 +27,16 @@ end
 img_size = size(img);   %三个元素：图像的高、图像的宽、图像的通道数
 %disp(img_size);
 %设定超像素个数
-K = 50;
+K = 500;
 %设定超像素紧凑系数
 m_compactness = 20;
 
 %转换到LAB色彩空间
 cform = makecform('srgb2lab');       %rgb空间转换成lab空间 matlab自带的用法
 img_Lab = applycform(img, cform);    %rgb转换成lab空间
+disp(max(img_Lab(:,1)));disp(min(img_Lab(:,1)));
+disp(max(img_Lab(:,2)));disp(min(img_Lab(:,2)));
+disp(max(img_Lab(:,3)));disp(min(img_Lab(:,3)));
 %img_Lab = RGB2Lab(img);  %不好用不知道为什么
 %imshow(img_Lab)
 % %检测边缘
@@ -114,11 +117,38 @@ plot(k_label_x, k_label_y, '*r');
 hold off;
 
 %根据得到的分区标签找到边界
+%nlabels像素点的类别标签
+%img_contoursEX像素点的分类显示
 img_ContoursEX = DrawContoursAroundSegments_EX(img, nlabels);
 figure(2);
 
 imshow(img_ContoursEX);
 title('超像素分割');
+
+%将超像素分割后的图像进行LAB聚类
+%img_Lab为图像的lab空间
+[Nlabels] = LAB_KMEANS(img,img_Lab, nlabels);
+
+N = max(max(Nlabels));
+disp(N)
+%random_color = zeros(N,3);
+% for i=1:N
+%     random_color(i, 1) = randi([0,255]);
+% 	random_color(i, 2) = randi([0,255]);%[50,100,150,200,250,20,60,120,140,160,180,220,240,70,130,170, 180];
+%     random_color(i, 3) = randi([0,255]);%[50,100,150,200,250,20,60,120,140,160,180,220,240,70,130,170, 180];
+% end
+random_color = [255,0,0;0,255,0;0,0,255;255,255,0;255,0,255;0,255,255;255,255,255;0,0,0];
+I_MG = zeros(r,c);
+for i=1:r
+    for j=1:c
+         I_MG(i,j,1) = random_color(Nlabels(i,j),1);
+         I_MG(i,j,2) = random_color(Nlabels(i,j),2);
+         I_MG(i,j,3) = random_color(Nlabels(i,j),3);
+    end
+end
+figure;
+imshow(I_MG);
+title('聚类');
 
 
 
