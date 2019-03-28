@@ -16,7 +16,7 @@ IM=double(tmp);
 [M,N]=size(IM);
 
 %disp(M);disp(N);
-IM=IM(20:99,10:109);%控制图片的输入范围
+%IM=IM(20:99,10:109);%控制图片的输入范围
 
 figure(3);
 title('图片删减');
@@ -86,9 +86,8 @@ for i=1:r
 end
 
 figure(4);
-title('FCM图像');
 imshow(uint8(IMMM));
-
+title('FCM图像');
 
 %[maxX,maxY]=size(IM);%maxX，maxY为图像IM大小
 
@@ -128,8 +127,8 @@ while(1)
 end
 IMMRF=uint8(IMMRF);
 figure(5);
-title('MRF图像');
 imshow(IMMRF);
+title('MRF图像');
 imwrite(IMMRF,'图像.jpg')
 CStruInfo=zeros(cluster_n,r*c);
 
@@ -145,7 +144,9 @@ for i=1:maxX
     end
 end
 [N_maxX,N_maxY]=size(IM2);
+
 %{
+%FCM-MRF方法
 chuan = 3;
 mrf_fcm = zeros(r,c);
 m_aver = zeros(r-chuan+1,c-chuan+1);
@@ -169,10 +170,12 @@ end_picture=(end_picture1+end_picture2);
 end_picture=end_picture./max(max(end_picture));
 Picture=uint8(end_picture*255);
 figure(6);
-title('最后图片');
 imshow(Picture);
+title('最后图片');
 imwrite(Picture, 'mrf_fcm.jpg');
 %}
+
+
 LOF=zeros(maxX,maxY);
 COUNT=0;
 for i=1:maxX
@@ -188,10 +191,12 @@ end_picture1=LOF.*im2double(IMMM);
 end_picture2=(1-LOF).*im2double(IMMRF);
 end_picture=(end_picture1+end_picture2);
 end_picture=end_picture./max(max(end_picture));
-Picture=uint8(end_picture*255);
+Picture = end_picture;
+%Picture=uint8(end_picture*255);
 figure(6);
 imshow(Picture);
 title('图像');
+imwrite(Picture, 'mrf_fcm_lof.jpg');
 %{
 %计算整个算法的Vpc和Vpe
 STR=zeros(size(U));

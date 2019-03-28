@@ -13,10 +13,8 @@ figure;
 imshow(I);
 title('原图');
 %原图像进行形态学处理（对比度拉伸）
-<<<<<<< HEAD
-[I_g] = processing(I_, 6);
+%[I_g] = processing(I_, 6);
 %I_g_ = double(I_g)./255;
-=======
 [I_g] = processing(I_);
 
 
@@ -24,7 +22,7 @@ title('原图');
 
 %{
 I_g_ = double(I_g)./255;
->>>>>>> 4dc2d0eeda4c3529df8e9d401985df70dba992d2
+
 %将形态学处理后的图像与原图像多尺度结合
 %I_g = (I_g + I_)/2;
 figure;
@@ -69,7 +67,7 @@ hold off;
 
 
 
->>>>>>> 4dc2d0eeda4c3529df8e9d401985df70dba992d2
+
 %超像素分割确定区域生长的初始种子点
 %Super_peiels(I);
 
@@ -81,11 +79,7 @@ hold off;
 %I = (I_g +I)/2;
 
 
-<<<<<<< HEAD
 
-
-
-=======
 %{
 >>>>>>> 4dc2d0eeda4c3529df8e9d401985df70dba992d2
 [r,c]=size(I_g);
@@ -138,7 +132,6 @@ kuagntu(SS);
 figure(5);
 [S_, x_, y_] = shengzhan(I, 0, x_, y_);   %原图像
 %}
->>>>>>> 4dc2d0eeda4c3529df8e9d401985df70dba992d2
 %{
 s=zeros(r,c);
 n=0;m=0;
@@ -197,12 +190,7 @@ end
 %S(100:105,110:125)=3; %grass
 %}
 %Show seeds overlayed on image
-<<<<<<< HEAD
-=======
 
-
-
->>>>>>> 4dc2d0eeda4c3529df8e9d401985df70dba992d2
 %{
 I_rgb=repmat(I_g_,[1,1,3]); %make rgb image (required by imoverlay)
 disp(size(I_rgb));
@@ -235,8 +223,8 @@ figure(8)
 image(I_rgb);
 imoverlay(FC,FC>0);
 title(sprintf('Fuzzy connected component at level %.2f',thresh));
-<<<<<<< HEAD
+
 %}
-=======
+
 %}
->>>>>>> 4dc2d0eeda4c3529df8e9d401985df70dba992d2
+

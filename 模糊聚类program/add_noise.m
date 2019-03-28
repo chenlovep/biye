@@ -7,7 +7,7 @@
 function [disImg]=add_noise(I)
 [row,col,nchannel]=size(I);
 %In=awgn(I,3,'measured','linear');
-disImg=uint8(double(I)+wgn(row,col,10));
+disImg=uint8(double(I)+wgn(row,col,5));
 
 %title('加噪声强度9%后');
 %label_image=imread('E:\PROJECT code\biye\不同方法的分割结果\3%噪声分割');
